@@ -7,6 +7,7 @@
 </head>
 
 <body>
+	<p>Salut.</p>
 	<p>Ceci est une page générée depuis une JSP.</p>
 	<p>
 		<%
