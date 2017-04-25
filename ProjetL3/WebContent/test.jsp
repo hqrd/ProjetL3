@@ -6,7 +6,6 @@
 <meta charset="utf-8" />
 <title>Test</title>
 </head>
-<c:import url="header.jsp" />
 <body>
 	<div class="container">
 		<div class="row">

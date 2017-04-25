@@ -27,6 +27,7 @@
 			<include-prelude>/header.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
+	
 	<servlet>
 		<servlet-name>Test</servlet-name>
 		<servlet-class>servlets.Test</servlet-class>

@@ -59,3 +59,7 @@
 		</div>
 	</div>
 </nav>
+
+<link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<c:url value="/resources/jquery.js" />" ></script>
+<script type="text/javascript" src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />" ></script>

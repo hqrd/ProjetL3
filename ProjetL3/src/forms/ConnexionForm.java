@@ -49,7 +49,7 @@ public final class ConnexionForm {
             setErreur( CHAMP_NOM, e.getMessage() );
         }
         utilisateur.setNom( nom );
-    	try {
+        try {
 			Connexion(utilisateur);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -57,9 +57,9 @@ public final class ConnexionForm {
 		}
         if ( erreurs.isEmpty() ) {
         	
-            resultat = "Succès de la connexion.";
+            resultat = "Succ�s de la connexion.";
         } else {
-            resultat = "Échec de la connexion.";
+            resultat = "Echec de la connexion.";
         }
         return utilisateur;
     }
