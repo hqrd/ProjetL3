@@ -20,8 +20,8 @@
  					<div class="input-group spinner">
    					<input type="text" class="form-control" id="nb" name="nb" value="1" min="0" max="40">
    						<div class="input-group-btn-vertical">
-     							<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
-						    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+     							<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+						    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
 						</div>
 				</div>
  					<p class="help-block">Min 0 - Max 40.</p>
