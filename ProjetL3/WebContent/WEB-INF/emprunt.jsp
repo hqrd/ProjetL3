@@ -8,7 +8,6 @@
 <link type="text/css" rel="stylesheet" href="form.css" />
 
 </head>
-<c:import url="header.jsp" />
 <body>
 	<div style="padding: 3rem 1rem">
   		<form class="well center-block" style="max-width: 35rem" method="post" action="Reservation">
@@ -21,8 +20,8 @@
  					<div class="input-group spinner">
    					<input type="text" class="form-control" id="nb" name="nb" value="1" min="0" max="40">
    						<div class="input-group-btn-vertical">
-     							<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-						    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+     							<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+						    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
 						</div>
 				</div>
  					<p class="help-block">Min 0 - Max 40.</p>

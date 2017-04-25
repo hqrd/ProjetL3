@@ -8,7 +8,6 @@
 <link type="text/css" rel="stylesheet" href="form.css" />
 
 </head>
-<c:import url="header.jsp" />
 
 <body>
 
