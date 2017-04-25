@@ -40,8 +40,6 @@ public class TestConnexion extends HttpServlet {
 	
 	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 	        /* Préparation de l'objet formulaire */
-			System.out.println("");
-		
 	        ConnexionForm form = new ConnexionForm();
 	        Objet o = new Objet();
 	        o.listeObjet(request);
