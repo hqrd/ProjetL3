@@ -7,7 +7,7 @@
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Projet L3</a>
+			<a class="navbar-brand" href="accueil">Projet L3</a>
 		</div>
 
 
@@ -22,6 +22,9 @@
 			</ul>
 			<c:choose>
 				<c:when test="${empty sessionScope.sessionUtilisateur}">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="inscription">S'inscrire</a></li>
+					</ul>
 					<form id="signin" class="navbar-form navbar-right" role="form" method="post" action="accueil">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> <input type="text" class="form-control" placeholder="Login" id="nom" name="nom" value="<c:out value="${utilisateur.nom}"/>" size="20" maxlength="20" />
@@ -32,6 +35,7 @@
 						</div>
 						<input type="submit" value="Connexion" class="btn btn-primary" />
 					</form>
+					
 				</c:when>
 				<c:otherwise>
 					<ul class="nav navbar-nav navbar-right">
