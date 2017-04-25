@@ -137,7 +137,7 @@ public final class ConnexionForm {
 
 	} catch ( SQLException e ) {
 	    /* Gérer les éventuelles erreurs ici */
-		System.out.println("erreur : "+e.getMessage());
+    	throw new Exception("erreur : "+e.getMessage());
 	} finally {
 	    if ( connexion != null )
 	        try {
