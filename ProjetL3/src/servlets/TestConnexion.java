@@ -62,8 +62,7 @@ public class TestConnexion extends HttpServlet {
 		        }
 
 		        /* Stockage du formulaire et du bean dans l'objet request */
-		        request.setAttribute( ATT_FORM, form );
-		        request.setAttribute( ATT_USER, utilisateur1 );
+		        
 	        }
 	        catch(Exception e)
 	        {

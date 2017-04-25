@@ -125,7 +125,9 @@ public class Objet {
 			try{
 					
 				resultat = statement.executeQuery( "update objet set qtiteRest = qtiteRest -"+qtite+" where id = "+id+";" );
-				resultat = statement.executeQuery("insert into emprunt (nom_user,id_objet,qtite_emprunt,rendu) values ('"+username+"',"+id+","+qtite+",false);");
+				resultat = statement.executeQuery("insert into emprunt "
+						+ "(nom_user,id_objet,qtite_emprunt,rendu) values "
+						+ "('"+username+"',"+id+","+qtite+",false);");
 			}
 			catch (Exception e)
 			{
