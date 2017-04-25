@@ -1,31 +1,31 @@
-apprenttisage j2e
+ï»¿apprenttisage j2e
 https://openclassrooms.com/courses/creez-votre-application-web-avec-java-ee
 
 h2 derby hypersql
 h2 le plus performant
 derby (mauvais retours, moins performant qu'h2)
-hypersql plus stable et rapide à prendre en mains, moins performant qu'h2
+hypersql plus stable et rapide Ã  prendre en mains, moins performant qu'h2
 
 
 Framework : struts ou jsf
 
-fonctionnalités:
--lister le matériel
+fonctionnalitÃ©s:
+-lister le matÃ©riel
 -retirer un objet
 -rendre un objet
 -ajouter nouvel objet
 -supprimer objets
--voir historique objet / général
+-voir historique objet / gÃ©nÃ©ral
 
 
 BDD
-Matériel
+MatÃ©riel
 	ID
 	Nom
 	Stock
 Emprunt
 	#Utilisateur
-	#Matériel
+	#MatÃ©riel
 	Date
 	Nombre
 Utilisateur
