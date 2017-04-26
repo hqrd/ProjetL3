@@ -48,7 +48,7 @@
 
 	<servlet>
 		<servlet-name>Connexion</servlet-name>
-		<servlet-class>servlets.TestConnexion</servlet-class>
+		<servlet-class>servlets.Connexion</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Connexion</servlet-name>

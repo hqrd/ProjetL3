@@ -13,7 +13,7 @@ import beans.Utilisateur;
 import forms.ConnexionForm
 ;
 
-public class TestConnexion extends HttpServlet {
+public class Connexion extends HttpServlet {
 	/**
 	 * 
 	 */
@@ -22,7 +22,7 @@ public class TestConnexion extends HttpServlet {
     public static final String ATT_FORM = "form";
     public static final String ATT_SESSION_USER = "sessionUtilisateur";
 
-    public static final String VUE = "/WEB-INF/test"
+    public static final String VUE = "/WEB-INF/accueil"
     		+ ".jsp";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

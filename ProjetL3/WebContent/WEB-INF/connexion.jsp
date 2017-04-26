@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Connexion</title>
+<title>Gestion de stocks</title>
 <link type="text/css" rel="stylesheet" href="form.css" />
 </head>
 <body>
