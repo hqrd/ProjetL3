@@ -181,7 +181,7 @@ public class Objet {
 		    String qtite = resultat.getString("qtite_emprunt");
 		    int id = resultat.getInt("id");
 		    message+="<tr><td>"+nom+"</td><td>"+qtite+"</td><td>"
-		    		+ "<form id='signin' class='navbar-form navbar-right' role='form' method='post' action='Rendre'>"
+		    		+ "<form id='signin' class='navbar-form navbar' role='form' method='post' action='Rendre'>"
 		    		+ "<button id='"+id+"' name='"+id+"' value='"+id+"' class='btn btn-primary'>Rendre</button></form></td></tr>";		    
 			}
 		message+="</tbody>";
@@ -196,7 +196,7 @@ public class Objet {
 		while ( resultat.next() ) {
 			String id = resultat.getString("nom");
 		    String qtite = resultat.getString("qtite_emprunt");
-		    String re = "Rendu";
+		    String re = "<span class='glyphicon glyphicon-ok' aria-hidden='true'></span>";
 		    message+="<tr><td>"+id+"</td><td>"+qtite+"</td><td>"+re+"</td></tr>";		    
 		}
 		message+="</tbody>";
