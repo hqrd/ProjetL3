@@ -102,6 +102,7 @@ public class Objet {
 			@SuppressWarnings("unused")
 			ResultSet resultat;
 			Statement statement = connexion.createStatement();
+
 			try {
 
 				resultat = statement
@@ -161,7 +162,7 @@ public class Objet {
 				String qtite = resultat.getString("qtite_emprunt");
 				int id = resultat.getInt("id");
 				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
-						+ "<form id='signin' class='navbar-form navbar-right' role='form' method='post' action='Rendre'>"
+						+ "<form id='signin' class='navbar-form navbar' role='form' method='post' action='Rendre'>"
 						+ "<button id='" + id + "' name='" + id + "' value='" + id
 						+ "' class='btn btn-primary'>Rendre</button></form></td></tr>";
 			}
@@ -217,7 +218,7 @@ public class Objet {
 			/////////////////// Liste select ////////////////////////////
 			resultat = statement.executeQuery("select id, intitule from objet where qtiteRest > 0;");
 
-			String message = "<select class='form-control' name='objet'><option selected>Choisir</option>";
+			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
 
 			while (resultat.next()) {
 
