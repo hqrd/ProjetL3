@@ -92,6 +92,7 @@ public class Objet {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
+		int iduser = user.getId();
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -108,9 +109,9 @@ public class Objet {
 			SqlUtil.close(statement);
 
 			statement = connexion.prepareStatement(
-					"insert into emprunt (nom_user,id_objet,qtite_emprunt,rendu) values (?,?,?,false);");
+					"insert into emprunt (id_user,id_objet,qtite_emprunt,rendu) values (?,?,?,false);");
 
-			statement.setString(1, username);
+			statement.setInt(1, iduser);
 			statement.setInt(2, id);
 			statement.setInt(3, qtite);
 
@@ -128,6 +129,7 @@ public class Objet {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
+		int iduser = user.getId();
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -138,9 +140,9 @@ public class Objet {
 			/////////////////// A rendre ////////////////////////////
 			statement = connexion
 					.prepareStatement("select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = false");
+							+ "emprunt join objet on id_objet = objet.id where id_User = ? and rendu = false");
 
-			statement.setString(1, username);
+			statement.setInt(1, iduser);
 
 			resultat = statement.executeQuery();
 
@@ -165,8 +167,8 @@ public class Objet {
 			//////////////////// Historique ////////////////////////////////
 			statement = connexion
 					.prepareStatement("select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = true");
-			statement.setString(1, username);
+							+ "emprunt join objet on id_objet = objet.id where id_User = ? and rendu = true");
+			statement.setInt(1, iduser);
 
 			resultat = statement.executeQuery();
 
@@ -218,6 +220,30 @@ public class Objet {
 			/* Gérer les éventuelles erreurs ici */
 		} finally {
 			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+	}
+	
+	public void ajouterBDD(HttpServletRequest request, String intitule, int qtite) {
+		Connection connexion = null;
+		PreparedStatement statement = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values"
+					+ "(?,?);");
+			
+			statement.setString(1, intitule);
+			statement.setInt(2, qtite);
+			statement.executeQuery();
+		}
+		catch(Exception e)
+		{
+			
+		}
+		finally
+		{
 			SqlUtil.close(statement);
 			SqlUtil.close(connexion);
 		}
