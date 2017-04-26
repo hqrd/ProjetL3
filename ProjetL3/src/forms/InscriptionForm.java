@@ -19,7 +19,7 @@ public final class InscriptionForm {
 	private static final String	CHAMP_PRENOM	= "prenom";
 
 	private String				resultat;
-	private Map<String, String>	erreurs			= new HashMap<String, String>();
+	private Map<String, String>	erreurs	= new HashMap<String, String>();
 
 	public String getResultat() {
 		return resultat;
@@ -120,6 +120,7 @@ public final class InscriptionForm {
 
 	/**
 	 * Insert un Utilisateur en BDD
+	 * 
 	 * @param utilisateur
 	 * @throws Exception
 	 */

@@ -81,8 +81,11 @@ public class Objet {
 				}
 		}
 	}
+	
+	public void emprunterObjet(HttpServletRequest request,int id,int qtite) throws Exception
+	{
+    	if (id == 0) throw new Exception("Veuillez choisir un objet");
 
-	public void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
@@ -102,6 +105,7 @@ public class Objet {
 			@SuppressWarnings("unused")
 			ResultSet resultat;
 			Statement statement = connexion.createStatement();
+
 
 			try {
 
@@ -215,6 +219,7 @@ public class Objet {
 
 			Statement statement = connexion.createStatement();
 			ResultSet resultat;
+
 			/////////////////// Liste select ////////////////////////////
 			resultat = statement.executeQuery("select id, intitule from objet where qtiteRest > 0;");
 
