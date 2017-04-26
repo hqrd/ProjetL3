@@ -47,11 +47,20 @@
 				</div>
 
 				<div class="form-group row">
-					<label for="nom" class="col-sm-3 col-form-label">Nom d'utilisateur</label>
+					<label for="nom" class="col-sm-3 col-form-label">Nom</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="text" id="nom" name="nom" value="<c:out value="${utilisateur.nom}"/>" size="20"
 							maxlength="20" />
 						<span class="erreur">${form.erreurs['nom']}</span> <br />
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label for="nom" class="col-sm-3 col-form-label">Prénom</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text" id="prenom" name="prenom" value="<c:out value="${utilisateur.prenom}"/>" size="20"
+							maxlength="20" />
+						<span class="erreur">${form.erreurs['prenom']}</span> <br />
 					</div>
 				</div>
 				
