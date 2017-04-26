@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import util.SqlUtil;
@@ -80,52 +79,45 @@ public class Objet {
 			SqlUtil.close(connexion);
 		}
 	}
-	
-	public void emprunterObjet(HttpServletRequest request,int id,int qtite) throws Exception
-	{
-    	if (id == 0) throw new Exception("Veuillez choisir un objet");
-    	else if (qtite<=0) throw new Exception("Veuillez saisir une quantité valable");
+
+	public void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
+		if (id == 0)
+			throw new Exception("Veuillez choisir un objet");
+		else if (qtite <= 0)
+			throw new Exception("Veuillez saisir une quantité valable");
+
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException e) {
-			/* Gérer les éventuelles erreurs ici. */
-		}
 
-		/* Connexion à la base de données */
-		String url = "jdbc:hsqldb:hsql://localhost/";
-		String utilisateur = "SA";
-		String motDePasse = "";
 		Connection connexion = null;
+		PreparedStatement statement = null;
 		try {
-			connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-			@SuppressWarnings("unused")
-			ResultSet resultat;
-			Statement statement = connexion.createStatement();
+			connexion = SqlUtil.getConnection();
 
-			try {
+			statement = connexion.prepareStatement("update objet set qtiteRest = qtiteRest - ? where id = ?;");
 
-				resultat = statement
-						.executeQuery("update objet set qtiteRest = qtiteRest -" + qtite + " where id = " + id + ";");
-				resultat = statement
-						.executeQuery("insert into emprunt " + "(nom_user,id_objet,qtite_emprunt,rendu) values " + "('"
-								+ username + "'," + id + "," + qtite + ",false);");
-			} catch (Exception e) {
-				throw new Exception("Erreur lors l'emprunt, Il n'y en pas assez");
-			}
+			statement.setInt(1, qtite);
+			statement.setInt(2, id);
+
+			statement.executeUpdate();
+
+			SqlUtil.close(statement);
+
+			statement = connexion.prepareStatement(
+					"insert into emprunt (nom_user,id_objet,qtite_emprunt,rendu) values (?,?,?,false);");
+
+			statement.setString(1, username);
+			statement.setInt(2, id);
+			statement.setInt(3, qtite);
+
+			statement.executeQuery();
 
 		} catch (SQLException e) {
-			/* Gérer les éventuelles erreurs ici */
+			throw new Exception("Erreur lors l'emprunt, Il n'y en pas assez");
 		} finally {
-			if (connexion != null)
-				try {
-					/* Fermeture de la connexion */
-					connexion.close();
-				} catch (SQLException ignore) {
-					/* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
-				}
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
 		}
 	}
 
@@ -133,28 +125,21 @@ public class Objet {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException e) {
-			/* Gérer les éventuelles erreurs ici. */
-		}
 
-		/* Connexion à la base de données */
-		String url = "jdbc:hsqldb:hsql://localhost/";
-		String utilisateur = "SA";
-		String motDePasse = "";
 		Connection connexion = null;
+		PreparedStatement statement = null;
+		ResultSet resultat = null;
 		try {
-			connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
+			connexion = SqlUtil.getConnection();
 
-			Statement statement = connexion.createStatement();
-			ResultSet resultat;
 			/////////////////// A rendre ////////////////////////////
-			resultat = statement
-					.executeQuery("select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where nom_User = '" + username
-							+ "' and rendu = false");
-			// resultat = statement.executeQuery( "select nom,test from user" );
+			statement = connexion
+					.prepareStatement("select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu from "
+							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = false");
+
+			statement.setString(1, username);
+
+			resultat = statement.executeQuery();
 
 			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Rendre</th></tr></thead><tbody>";
 
@@ -171,9 +156,16 @@ public class Objet {
 			message += "</tbody>";
 			message += "</table></br></br>";
 
+			SqlUtil.close(statement);
+			SqlUtil.close(resultat);
+
 			//////////////////// Historique ////////////////////////////////
-			resultat = statement.executeQuery("select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu from "
-					+ "emprunt join objet on id_objet = objet.id where nom_User = '" + username + "' and rendu = true");
+			statement = connexion
+					.prepareStatement("select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu from "
+							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = true");
+			statement.setString(1, username);
+
+			resultat = statement.executeQuery();
 
 			message += "<h2>Historique</h2><table class='table table-hover'>	"
 					+ "<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Rendu</th></tr></thead><tbody>";
@@ -190,59 +182,41 @@ public class Objet {
 		} catch (SQLException e) {
 			/* Gérer les éventuelles erreurs ici */
 		} finally {
-			if (connexion != null)
-				try {
-					/* Fermeture de la connexion */
-					connexion.close();
-				} catch (SQLException ignore) {
-					/* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
-				}
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
 		}
 	}
 
 	public void selectObj(HttpServletRequest request) {
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException e) {
-			/* Gérer les éventuelles erreurs ici. */
-		}
-
-		/* Connexion à la base de données */
-		String url = "jdbc:hsqldb:hsql://localhost/";
-		String utilisateur = "SA";
-		String motDePasse = "";
 		Connection connexion = null;
+		PreparedStatement statement = null;
+		ResultSet resultat = null;
 		try {
-			connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-
-			Statement statement = connexion.createStatement();
-			ResultSet resultat;
+			connexion = SqlUtil.getConnection();
 
 			/////////////////// Liste select ////////////////////////////
-			resultat = statement.executeQuery("select id, intitule from objet where qtiteRest > 0;");
+			statement = connexion.prepareStatement("select id, intitule from objet where qtiteRest > 0;");
+
+			resultat = statement.executeQuery();
 
 			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
 
 			while (resultat.next()) {
-
 				int id = resultat.getInt("id");
 				String intitule = resultat.getString("intitule");
 				message += "<option value='" + id + "'>" + intitule + "</option>";
-				// System.out.println(nom+" "+qtite);
 			}
+
 			message += "</select><label for='objet'>Objet</label>";
 
 			request.setAttribute("tab", message);
 		} catch (SQLException e) {
 			/* Gérer les éventuelles erreurs ici */
 		} finally {
-			if (connexion != null)
-				try {
-					/* Fermeture de la connexion */
-					connexion.close();
-				} catch (SQLException ignore) {
-					/* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
-				}
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
 		}
 	}
 }

@@ -26,7 +26,6 @@ public class RestrictionFilter implements Filter {
 
 		/* Non-filtrage des ressources statiques */
 		String chemin = request.getRequestURI().substring(request.getContextPath().length());
-		System.out.println(chemin);
 		if (chemin.startsWith("/resources") || chemin.startsWith("/WEB-INF/lib") || chemin.startsWith("/accueil")) {
 			chain.doFilter(request, response);
 			return;
