@@ -107,13 +107,13 @@ public final class ConnexionForm {
 			statement.setString(2, pswdEnc);
 			resultat = statement.executeQuery();
 
-			statement.close();
-			resultat.close();
 
 			// resultat = statement.executeQuery(sql);
 
 			// boolean flag = false;
 			if (!resultat.next()) {
+				statement.close();
+				resultat.close();
 				statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE NOM = ?;");
 				statement.setString(1, user.getNom());
 				resultat = statement.executeQuery();
