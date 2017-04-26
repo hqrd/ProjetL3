@@ -122,8 +122,9 @@ public class Objet {
 		    @SuppressWarnings("unused")
 			ResultSet resultat;
 		    Statement statement = connexion.createStatement();
-			try{
-					
+
+		    try{
+
 				resultat = statement.executeQuery( "update objet set qtiteRest = qtiteRest -"+qtite+" where id = "+id+";" );
 				resultat = statement.executeQuery("insert into emprunt "
 						+ "(nom_user,id_objet,qtite_emprunt,rendu) values "
@@ -147,7 +148,7 @@ public class Objet {
 		        }
 		}
 	}
-	
+
 	public void listeEmprunt(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user =  (Utilisateur) session.getAttribute(ATT_SESSION_USER);
@@ -240,7 +241,7 @@ public class Objet {
 			
 	        
 	      
-			String message = "<select class='form-control' name='objet'><option selected>Choisir</option>";
+			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
 
 			while ( resultat.next() ) {
 		
