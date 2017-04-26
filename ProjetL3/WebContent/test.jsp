@@ -6,7 +6,6 @@
 <meta charset="utf-8" />
 <title>Test</title>
 </head>
-<c:import url="header.jsp" />
 <body>
 	<div class="container">
 		<div class="row">
@@ -102,14 +101,12 @@
 				<tr>
 					<td>Table</td>
 					<td>12</td>
-					<td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-					</td>
+					<td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
 				</tr>
 				<tr>
 					<td>Chaise</td>
 					<td>0</td>
-					<td><span class="glyphicon glyphicon-remove"
-						aria-hidden="true"></span>
+					<td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 				</tr>
 				<tr>
 					<td>Armoire</td>
@@ -120,11 +117,9 @@
 		</table>
 	</div>
 </body>
-<link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet"
-	type="text/css" />
+<link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<c:url value="/resources/jquery.js" />" />
-<script type="text/javascript"
-	src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />" />
+<script type="text/javascript" src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />" />
 <script>
 	$(document).ready(function() {
 
