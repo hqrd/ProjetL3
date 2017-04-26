@@ -16,17 +16,17 @@
 			<br />
 			<div class="col-md-4">
 				<div class="input-group spinner">
-					<input type="text" class="form-control" id="nb" name="nb" value="1" min="0" max="40">
+					<input type="text" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
 					<div class="input-group-btn-vertical">
 						<button class="btn btn-default" type="button">
-							<i class="fa fa-caret-up"></i>
+							<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 						</button>
 						<button class="btn btn-default" type="button">
-							<i class="fa fa-caret-down"></i>
+							<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 						</button>
 					</div>
 				</div>
-				<p class="help-block">Min 0 - Max 40.</p>
+				<p class="help-block">Min 1 - Max 40.</p>
 			</div>
 			<br />
 			<div>
