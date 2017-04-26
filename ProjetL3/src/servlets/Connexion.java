@@ -53,6 +53,7 @@ public class Connexion extends HttpServlet {
 		        /* Stockage du formulaire et du bean dans l'objet request */
 		        request.setAttribute( ATT_FORM, form );
 		        request.setAttribute( ATT_USER, utilisateur1 );
+
 		        if ( form.getErreurs().isEmpty() ) {
 		            session.setAttribute( ATT_SESSION_USER, utilisateur1 );
 		        } else {

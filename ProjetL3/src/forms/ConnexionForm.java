@@ -6,19 +6,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import beans.Utilisateur;
+import util.SqlUtil;
 
 public final class ConnexionForm {
 
-	private static final String	CHAMP_PASS	= "motdepasse";
-	private static final String	CHAMP_NOM	= "nom";
+	private static final String			CHAMP_PASS	= "motdepasse";
+	private static final String			CHAMP_EMAIL	= "email";
 
-	private String				resultat;
-	private Map<String, String>	erreurs		= new HashMap<String, String>();
+	private String						resultat;
+	private static Map<String, String>	erreurs		= new HashMap<String, String>();
 
 	public String getResultat() {
 		return resultat;
@@ -28,43 +28,43 @@ public final class ConnexionForm {
 		return erreurs;
 	}
 
+	public void resetErrors() {
+		erreurs.clear();
+	}
+
 	public Utilisateur connecterUtilisateur(HttpServletRequest request) {
+		resetErrors();
+
 		String motDePasse = getValeurChamp(request, CHAMP_PASS);
-		String nom = getValeurChamp(request, CHAMP_NOM);
+		String email = getValeurChamp(request, CHAMP_EMAIL);
 
 		Utilisateur utilisateur = new Utilisateur();
 		utilisateur.setMotDePasse(motDePasse);
 
 		try {
-			validationNom(nom);
+			validationEmail(email);
 		} catch (Exception e) {
-			setErreur(CHAMP_NOM, e.getMessage());
+			setErreur(CHAMP_EMAIL, e.getMessage());
 		}
-		utilisateur.setNom(nom);
+		utilisateur.setEmail(email);
 		try {
 			Connexion(utilisateur);
 		} catch (Exception e) {
-			setErreur(CHAMP_NOM, e.getMessage());
-		}
-		if (erreurs.isEmpty()) {
-
-			resultat = "Succès de la connexion.";
-		} else {
-			resultat = "Echec de la connexion.";
+			//
 		}
 		return utilisateur;
 	}
 
-	private void validationNom(String nom) throws Exception {
-		if (nom != null && nom.length() < 3) {
-			throw new Exception("Le nom d'utilisateur doit contenir au moins 3 caractères.");
+	private void validationEmail(String email) throws Exception {
+		if (!email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
+			throw new Exception("Merci de saisir une adresse mail valide.");
 		}
 	}
 
 	/*
 	 * Ajoute un message correspondant au champ spécifié à la map des erreurs.
 	 */
-	private void setErreur(String champ, String message) {
+	private static void setErreur(String champ, String message) {
 		erreurs.put(champ, message);
 	}
 
@@ -82,91 +82,46 @@ public final class ConnexionForm {
 	}
 
 	private static void Connexion(Utilisateur user) throws Exception {
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException e) {
-			/* Gérer les éventuelles erreurs ici. */
-		}
 
-		/* Connexion à la base de données */
-		String url = "jdbc:hsqldb:hsql://localhost/";
-		String utilisateur = "SA";
-		String motDePasse = "";
 		Connection connexion = null;
 		ResultSet resultat = null;
 		PreparedStatement statement = null;
 		try {
-			connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
-
-			// Statement statement = connexion.createStatement();
+			connexion = SqlUtil.getConnection();
 
 			String pswdEnc = encode(user.getMotDePasse());
 
-			statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE NOM = ? AND PSWDENC = ?;");
-			statement.setString(1, user.getNom());
+			statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE EMAIL = ? AND PSWDENC = ?;");
+			statement.setString(1, user.getEmail());
 			statement.setString(2, pswdEnc);
+
 			resultat = statement.executeQuery();
 
-
-			// resultat = statement.executeQuery(sql);
-
-			// boolean flag = false;
 			if (!resultat.next()) {
 				statement.close();
 				resultat.close();
-				statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE NOM = ?;");
-				statement.setString(1, user.getNom());
+				statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE EMAIL = ?;");
+				statement.setString(1, user.getEmail());
 				resultat = statement.executeQuery();
 
 				if (resultat.next()) {
-					throw new Exception("Le mot de passe est incorrect");
+					setErreur(CHAMP_PASS, "Le mot de passe est incorrect");
+					throw new Exception();
 				} else {
-					throw new Exception("Le nom d'utilisateur est invalide");
+					setErreur(CHAMP_EMAIL, "L'email est invalide");
+					throw new Exception();
 				}
+			} else {
+				user.setNom(resultat.getString("nom"));
+				user.setPrenom(resultat.getString("prenom"));
 			}
-
-			// while (resultat.next()) {
-			// System.out.println("Found=" + resultat.getString("PSWDENC"));
-			//
-			// String pswd = resultat.getString("PSWDENC");
-			// if (pswd.equals(pswdEnc)) {
-			// flag = true;
-			// } else {
-			// System.out.println("mauvais mot de passe");
-			// throw new Exception("Le mot de passe est incorrect");
-			// }
-			// // System.out.println(nom+" "+test);
-			// }
-			// if (flag) {
-			// } else {
-			// System.out.println("Aucun resultat");
-			// throw new Exception("Le nom d'utilisateur est invalide");
-			// }
 
 		} catch (SQLException e) {
 			throw new Exception("erreur : " + e.getMessage());
 		} finally {
-			if (resultat != null) {
-				try {
-					/* Fermeture de l'objet ResultSet */
-					resultat.close();
-				} catch (SQLException ignore) {
-				}
-			}
-			if (statement != null) {
-				try {
-					/* Fermeture de l'objet Statement */
-					statement.close();
-				} catch (SQLException ignore) {
-				}
-			}
-			if (connexion != null)
-				try {
-					/* Fermeture de la connexion */
-					connexion.close();
-				} catch (SQLException ignore) {
-					/* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
-				}
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
 		}
 	}
 
@@ -174,6 +129,10 @@ public final class ConnexionForm {
 	 * Coder les mots de passe
 	 */
 	private static String encode(String password) {
+		if (password == null)
+			return null;
+		if (password == "")
+			return "";
 		byte[] uniqueKey = password.getBytes();
 		byte[] hash = null;
 		try {
