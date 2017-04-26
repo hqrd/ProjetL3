@@ -2,6 +2,7 @@ package beans;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,16 +19,22 @@ public class Objet {
 
 	public void listeObjet(HttpServletRequest request) {
 		Connection connexion = null;
+		ResultSet resultat = null;
+		PreparedStatement statement = null;
 		try {
 			connexion = SqlUtil.getConnection();
-			Statement statement = connexion.createStatement();
-			ResultSet resultat;
-			resultat = statement.executeQuery("select intitule,qtiterest from objet");
-			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantit&eacute;</th></tr></thead><tbody>";
+
+			statement = connexion.prepareStatement("select intitule,qtiterest from objet");
+
+			resultat = statement.executeQuery();
+
+			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantité</th><th>Actions	 </th></tr></thead><tbody>";
 			while (resultat.next()) {
 				String nom = resultat.getString("intitule");
 				String qtite = resultat.getString("qtiterest");
-				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>";
+				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
+						+ "<button type='button' class='btn btn-default btn-sm'>Réserver</button>"
+						+ "<button type='button' class='btn btn-default btn-sm'>Rendre</button>" + "</td>";
 			}
 			message += "</tbody>";
 			message += "</table>";
@@ -37,54 +44,46 @@ public class Objet {
 		} catch (SQLException e) {
 			/* Gérer les éventuelles erreurs ici */
 		} finally {
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
 			SqlUtil.close(connexion);
 		}
 	}
 
 	public void rendreOjet(int id) throws Exception {
-		try {
-			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		} catch (ClassNotFoundException e) {
-			/* Gérer les éventuelles erreurs ici. */
-		}
-
-		/* Connexion à la base de données */
-		String url = "jdbc:hsqldb:hsql://localhost/";
-		String utilisateur = "SA";
-		String motDePasse = "";
 		Connection connexion = null;
+		PreparedStatement statement = null;
 		try {
-			connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
+			connexion = SqlUtil.getConnection();
 
-			Statement statement = connexion.createStatement();
-			@SuppressWarnings("unused")
-			ResultSet resultat;
-			try {
-				String sqlToObjet = "update objet set qtiteRest = qtiteRest + (select qtite_emprunt from emprunt where id = "
-						+ id + ") where id = (select id_objet from emprunt where id = " + id + ");";
-				String sqlToEmprunt = "update emprunt set rendu = true where id = " + id + ";";
-				resultat = statement.executeQuery(sqlToObjet);
-				resultat = statement.executeQuery(sqlToEmprunt);
+			statement = connexion.prepareStatement(
+					"update objet set qtiteRest = qtiteRest + (select qtite_emprunt from emprunt where id = ?)"
+							+ " where id = (select id_objet from emprunt where id = ?);");
 
-			} catch (Exception e) {
-				throw new Exception("Erreur lors la restitution");
-			}
+			statement.setInt(1, id);
+			statement.setInt(2, id);
+
+			statement.executeUpdate();
+
+			SqlUtil.close(statement);
+
+			statement = connexion.prepareStatement("update emprunt set rendu = true where id = ?;");
+
+			statement.setInt(1, id);
+
+			statement.executeUpdate();
+
 		} catch (SQLException e) {
 			/* Gérer les éventuelles erreurs ici */
 		} finally {
-			if (connexion != null)
-				try {
-					/* Fermeture de la connexion */
-					connexion.close();
-				} catch (SQLException ignore) {
-					/* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
-				}
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
 		}
 	}
-	
-	public void emprunterObjet(HttpServletRequest request,int id,int qtite) throws Exception
-	{
-    	if (id == 0) throw new Exception("Veuillez choisir un objet");
+
+	public void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
+		if (id == 0)
+			throw new Exception("Veuillez choisir un objet");
 
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
@@ -105,7 +104,6 @@ public class Objet {
 			@SuppressWarnings("unused")
 			ResultSet resultat;
 			Statement statement = connexion.createStatement();
-
 
 			try {
 
