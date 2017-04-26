@@ -85,7 +85,7 @@ public class Objet {
 	public void emprunterObjet(HttpServletRequest request,int id,int qtite) throws Exception
 	{
     	if (id == 0) throw new Exception("Veuillez choisir un objet");
-
+    	else if (qtite<=0) throw new Exception("Veuillez saisir une quantit&eacute; valable");
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
