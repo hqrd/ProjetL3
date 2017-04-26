@@ -30,7 +30,7 @@ public class Deconnexion extends HttpServlet {
 		request.setAttribute("class2", "");
 		request.setAttribute("te3", "");
 		request.setAttribute("class3", "");
-		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+		response.sendRedirect( request.getContextPath() + "/accueil" );
 
 	}
 	
