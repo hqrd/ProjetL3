@@ -103,6 +103,7 @@ public class Objet {
 	
 	public void emprunterObjet(HttpServletRequest request,int id,int qtite) throws Exception
 	{
+    	if (id == 0) throw new Exception("Veuillez choisir un objet");
 		HttpSession session = request.getSession();
 		Utilisateur user =  (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		String username = user.getNom();
@@ -124,7 +125,6 @@ public class Objet {
 		    Statement statement = connexion.createStatement();
 
 		    try{
-
 				resultat = statement.executeQuery( "update objet set qtiteRest = qtiteRest -"+qtite+" where id = "+id+";" );
 				resultat = statement.executeQuery("insert into emprunt "
 						+ "(nom_user,id_objet,qtite_emprunt,rendu) values "
@@ -241,7 +241,7 @@ public class Objet {
 			
 	        
 	      
-			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
+			String message = "<label for='objet'>Objet</label><select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
 
 			while ( resultat.next() ) {
 		
@@ -250,7 +250,7 @@ public class Objet {
 		    message+="<option value='"+id+"'>"+intitule+"</option>";		    
 		    //System.out.println(nom+" "+qtite);
 			}
-		message+="</select><label for='objet'>Objet</label>";
+		message+="</select>";
 		
 	
 

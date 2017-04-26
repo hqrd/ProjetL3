@@ -101,7 +101,7 @@ public final class ConnexionForm {
 			// Statement statement = connexion.createStatement();
 
 			String pswdEnc = encode(user.getMotDePasse());
-
+			System.out.println("test pswd "+ pswdEnc);
 			statement = connexion.prepareStatement("SELECT * FROM UTILISATEUR WHERE NOM = ? AND PSWDENC = ?;");
 			statement.setString(1, user.getNom());
 			statement.setString(2, pswdEnc);

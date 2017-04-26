@@ -5,7 +5,6 @@
 <head>
 <meta charset="utf-8" />
 <title>Gestion de stocks</title>
-<link type="text/css" rel="stylesheet" href="form.css" />
 
 </head>
 <body>
@@ -14,10 +13,12 @@
 			<legend class="text-center">Emprunt</legend>
 			<div class="form-group has-float-label">${tab}</div>
 			<br />
-			<div class="col-md-4">
-				<div class="input-group spinner">
+				<label for='spin-nb'>Quantit&eacute;</label>
+				
+				<div id="spin-nb" class="input-group spinner">
+				
 					<input type="text" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
-					<div class="input-group-btn-vertical">
+					<div class="input-group-btn">
 						<button class="btn btn-default" type="button">
 							<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 						</button>
@@ -27,7 +28,7 @@
 					</div>
 				</div>
 				<p class="help-block">Min 1 - Max 40.</p>
-			</div>
+
 			<br />
 			<div>
 				<button class="btn btn-block btn-primary" type="submit">Emprunter</button>
