@@ -21,13 +21,22 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>RestrictionFilter</filter-name>
+		<filter-class>filters.RestrictionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>RestrictionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<jsp-config>
 		<jsp-property-group>
 			<url-pattern>*.jsp</url-pattern>
 			<include-prelude>/header.jsp</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
-	
+
 	<servlet>
 		<servlet-name>Test</servlet-name>
 		<servlet-class>servlets.Test</servlet-class>
