@@ -38,11 +38,9 @@ public class AjoutObjet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String intitule = request.getParameter("intitule");
-		String qtite_tmp = request.getParameter("quantite");
-		int qtite = (int) Integer.parseInt(qtite_tmp);
+		
 		Objet o = new Objet();
-		o.ajouterBDD(request, intitule, qtite);
+		o.ajouterBDD(request);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
