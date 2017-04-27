@@ -86,3 +86,5 @@ CREATE TABLE OBJET
 );
 INSERT INTO OBJET (ID,INTITULE,QTITEREST)
 VALUES (1,'Table',17);
+
+update utilisateur set role = 'admin';

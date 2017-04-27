@@ -121,14 +121,11 @@ public class Objet {
 		}
 	}
 
-	public static void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
+	public static void emprunterObjet(Utilisateur user, Integer id, Integer qtite) throws Exception {
 		if (id == 0)
 			throw new Exception("Veuillez choisir un objet");
 		else if (qtite <= 0)
 			throw new Exception("Veuillez saisir une quantité valable");
-
-		HttpSession session = request.getSession();
-		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -325,7 +322,6 @@ public class Objet {
 		}
 		return id;
 	}
-
 
 	public static void ajouterBDD(HttpServletRequest request) throws SQLException {
 
