@@ -19,8 +19,7 @@ public class Emprunt extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Objet o = new Objet();
-		o.selectObj(request);
+		Objet.selectObj(request);
 		request.setAttribute("te2", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class2", "active");
 		request.setAttribute("te3", "");

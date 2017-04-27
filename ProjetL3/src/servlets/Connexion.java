@@ -32,8 +32,7 @@ public class Connexion extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Objet o = new Objet();
-		o.listeObjet(request);
+		Objet.listeObjet(request);
 		
 		setActiveMenu(request);
 		
@@ -43,8 +42,7 @@ public class Connexion extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Préparation de l'objet formulaire */
 		ConnexionForm form = new ConnexionForm();
-		Objet o = new Objet();
-		o.listeObjet(request);
+		Objet.listeObjet(request);
 		
 		setActiveMenu(request);
 		

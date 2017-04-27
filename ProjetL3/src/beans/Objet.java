@@ -1,9 +1,11 @@
 package beans;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import util.SqlUtil;
@@ -40,7 +42,7 @@ public class Objet {
 		this.qtiterest = qtiterest;
 	}
 
-	public void listeObjet(HttpServletRequest request) {
+	public static void listeObjet(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 
@@ -87,7 +89,7 @@ public class Objet {
 		}
 	}
 
-	public void rendreOjet(int id) throws Exception {
+	public static void rendreOjet(int id) throws Exception {
 		Connection connexion = null;
 		PreparedStatement statement = null;
 		try {
@@ -104,9 +106,10 @@ public class Objet {
 
 			SqlUtil.close(statement);
 
-			statement = connexion.prepareStatement("update emprunt set rendu = true where id = ?;");
+			statement = connexion.prepareStatement("update emprunt set rendu = true, date_rendu = ? where id = ?;");
 
-			statement.setInt(1, id);
+			statement.setDate(1, new Date(Calendar.getInstance().getTimeInMillis()));
+			statement.setInt(2, id);
 
 			statement.executeUpdate();
 
@@ -118,7 +121,7 @@ public class Objet {
 		}
 	}
 
-	public void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
+	public static void emprunterObjet(HttpServletRequest request, int id, int qtite) throws Exception {
 		if (id == 0)
 			throw new Exception("Veuillez choisir un objet");
 		else if (qtite <= 0)
@@ -159,7 +162,7 @@ public class Objet {
 		}
 	}
 
-	public void listeEmprunt(HttpServletRequest request) {
+	public static void listeEmprunt(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 
@@ -225,7 +228,7 @@ public class Objet {
 		}
 	}
 
-	public void selectObj(HttpServletRequest request) {
+	public static void selectObj(HttpServletRequest request) {
 		Connection connexion = null;
 		PreparedStatement statement = null;
 		ResultSet resultat = null;
@@ -323,7 +326,7 @@ public class Objet {
 		return id;
 	}
 
-	public void ajouterBDD(HttpServletRequest request) {
+	public static void ajouterBDD(HttpServletRequest request) {
 		Connection connexion = null;
 		PreparedStatement statement = null;
 		try {
