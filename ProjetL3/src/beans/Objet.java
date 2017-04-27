@@ -323,7 +323,7 @@ public class Objet {
 		return id;
 	}
 
-	public void ajouterBDD(HttpServletRequest request, String intitule, int qtite) {
+	public void ajouterBDD(HttpServletRequest request) {
 		Connection connexion = null;
 		PreparedStatement statement = null;
 		try {
@@ -331,9 +331,16 @@ public class Objet {
 
 			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values" + "(?,?);");
 
+			String intitule = request.getParameter("intitule");
+			String qtite_tmp = request.getParameter("quantite");
+			int qtite = (int) Integer.parseInt(qtite_tmp);
+
+			System.out.println("intitule : " + intitule + "\nqtite = " + qtite);
+			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values" + "(?,?);");
+
 			statement.setString(1, intitule);
 			statement.setInt(2, qtite);
-			statement.executeQuery();
+			statement.executeUpdate();
 		} catch (Exception e) {
 
 		} finally {

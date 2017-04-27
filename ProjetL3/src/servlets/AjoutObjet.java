@@ -20,7 +20,7 @@ public class AjoutObjet extends HttpServlet {
 	public static final String	ATT_FORM			= "form";
 	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
-	public static final String	VUE					= "/WEB-INF/ajoutObjet" + ".jsp";
+	public static final String VUE = "/WEB-INF/ajoutObjet" + ".jsp";
 
 	private void setActiveMenu(HttpServletRequest request) {
 		request.setAttribute("te1", "<span class='sr-only'>(current)</span>");
@@ -32,17 +32,14 @@ public class AjoutObjet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String intitule = request.getParameter("intitule");
-		String qtite_tmp = request.getParameter("quantite");
-		int qtite = (int) Integer.parseInt(qtite_tmp);
+
 		Objet o = new Objet();
-		o.ajouterBDD(request, intitule, qtite);
+		o.ajouterBDD(request);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
