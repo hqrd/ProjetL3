@@ -15,10 +15,11 @@ import util.SqlUtil;
 
 public final class AjouterForm {
 
-	private static final String			CHAMP_ERREUR	= "erreur";
+	private static final String	CHAMP_INITULE	= "intitule";
+	private static final String	CHAMP_QTITE		= "quantite";
 
 	private String						resultat;
-	private static Map<String, String>	erreurs		= new HashMap<String, String>();
+	private static Map<String, String>	erreurs	= new HashMap<String, String>();
 
 	public String getResultat() {
 		return resultat;
@@ -32,30 +33,49 @@ public final class AjouterForm {
 		erreurs.clear();
 	}
 
-	public void validation(HttpServletRequest request)
-	{
-		Objet o = new Objet();
-		
-		try
-		{
-			Objet.ajouterBDD(request);
+	public void validation(HttpServletRequest request) {
+		resetErrors();
+
+		String intitule = request.getParameter(CHAMP_INITULE);
+		String qtite_tmp = request.getParameter(CHAMP_QTITE);
+		int qtite = 0;
+		try {
+			qtite = (int) Integer.parseInt(qtite_tmp);
+		} catch (Exception e) {
+			setErreur(CHAMP_QTITE, "Veuillez saisir un nombre");
 		}
-		catch(SQLException e)
-		{
-			setErreur(CHAMP_ERREUR, e.getMessage());
+
+		if (intitule == "")
+			setErreur(CHAMP_INITULE, "Veuillez saisir un intitule d'objet");
+
+		if (qtite < 0)
+			setErreur(CHAMP_QTITE, "\nVeuilliez saisir une quantité valide (supérieur ou égale à 0)");
+		if (erreurs.isEmpty()) {
+			try {
+
+				Objet.ajouterBDD(intitule, qtite);
+			} catch (SQLException e) {
+				setErreur(CHAMP_INITULE, e.getMessage());
+			}
 		}
-		
+		if (erreurs.isEmpty())
+
+		{
+			resultat = "Succès de l'insertion";
+		} else
+
+		{
+			resultat = "Echec de l'insertion";
+
+		}
+
 	}
+
 	/*
 	 * Ajoute un message correspondant au champ spécifié à la map des erreurs.
 	 */
 	private static void setErreur(String champ, String message) {
 		erreurs.put(champ, message);
 	}
-
-	
-
-
-
 
 }

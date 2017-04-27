@@ -17,7 +17,6 @@ public class AjoutObjet extends HttpServlet {
 	 * 
 	 */
 	private static final long	serialVersionUID	= 1L;
-	public static final String	ATT_USER			= "utilisateur";
 	public static final String	ATT_FORM			= "form";
 	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
@@ -41,6 +40,7 @@ public class AjoutObjet extends HttpServlet {
 
 		AjouterForm form = new AjouterForm();
 		form.validation(request);
+		request.setAttribute( ATT_FORM, form );
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 

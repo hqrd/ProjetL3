@@ -327,7 +327,7 @@ public class Objet {
 	}
 
 
-	public static void ajouterBDD(HttpServletRequest request) throws SQLException {
+	public static void ajouterBDD(String intitule, int qtite) throws SQLException {
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -335,10 +335,6 @@ public class Objet {
 			connexion = SqlUtil.getConnection();
 
 			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values" + "(?,?);");
-
-			String intitule = request.getParameter("intitule");
-			String qtite_tmp = request.getParameter("quantite");
-			int qtite = (int) Integer.parseInt(qtite_tmp);
 
 			statement.setString(1, intitule);
 			statement.setInt(2, qtite);
