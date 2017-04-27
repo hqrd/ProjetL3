@@ -12,12 +12,14 @@ public class Utilisateur {
 	private String	prenom;
 	private String	email;
 	private String	motDePasse;
+	private String	role;
 
-	public Utilisateur(String nom, String prenom, String email, String motDePasse) {
+	public Utilisateur(String nom, String prenom, String email, String motDePasse, String role) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.motDePasse = motDePasse;
+		this.role = role;
 	}
 
 	public Utilisateur() {
@@ -55,6 +57,14 @@ public class Utilisateur {
 		this.email = email;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public String toString() {
 		return "Email : " + email + " nom : " + nom + " prenom : " + prenom;
 	}
@@ -72,7 +82,7 @@ public class Utilisateur {
 
 			if (resultat.next()) {
 				Utilisateur utilisateur = new Utilisateur(resultat.getString("NOM"), resultat.getString("prenom"),
-						resultat.getString("email"), resultat.getString("pswdenc"));
+						resultat.getString("email"), resultat.getString("pswdenc"), resultat.getString("role"));
 
 				return utilisateur;
 			} else
@@ -131,7 +141,7 @@ public class Utilisateur {
 	 * 
 	 * @param intitule
 	 * @return le nombre d'objets reservés
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public int getObjets(String intitule) throws Exception {
 		Connection connexion = null;
@@ -158,4 +168,5 @@ public class Utilisateur {
 			SqlUtil.close(connexion);
 		}
 	}
+
 }

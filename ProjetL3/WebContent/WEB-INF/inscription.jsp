@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container">
-		<form method="post" action="inscription">
+		<form method="post" action="<%=request.getContextPath()%>/inscription">
 			<fieldset>
 				<legend>Inscription</legend>
 				<p>Vous pouvez vous inscrire via ce formulaire.</p>

@@ -9,25 +9,25 @@
 </head>
 <body>
 	<div style="padding: 3rem 1rem">
-		<form class="well center-block" style="max-width: 35rem" method="post" action="Reservation">
+		<form class="well center-block" style="max-width: 35rem" method="post"
+			action="<%=request.getContextPath()%>/Reservation">
 			<legend class="text-center">Emprunt</legend>
 			<div class="form-group has-float-label">${tab}</div>
-			<br />
-				<label for='spin-nb'>Quantit&eacute;</label>
-				
-				<div id="spin-nb" class="input-group spinner">
-				
-					<input type="text" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
-					<div class="input-group-btn">
-						<button class="btn btn-default" type="button">
-							<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-						</button>
-						<button class="btn btn-default" type="button">
-							<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-						</button>
-					</div>
+			<br /> <label for='spin-nb'>Quantit&eacute;</label>
+
+			<div id="spin-nb" class="input-group spinner">
+
+				<input type="text" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="button">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button>
+					<button class="btn btn-default" type="button">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button>
 				</div>
-				<p class="help-block">Min 1 - Max 40.</p>
+			</div>
+			<p class="help-block">Min 1 - Max 40.</p>
 
 			<br />
 			<div>
