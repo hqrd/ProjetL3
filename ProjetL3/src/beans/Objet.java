@@ -322,4 +322,24 @@ public class Objet {
 		}
 		return id;
 	}
+
+	public void ajouterBDD(HttpServletRequest request, String intitule, int qtite) {
+		Connection connexion = null;
+		PreparedStatement statement = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values" + "(?,?);");
+
+			statement.setString(1, intitule);
+			statement.setInt(2, qtite);
+			statement.executeQuery();
+		} catch (Exception e) {
+
+		} finally {
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+	}
+
 }

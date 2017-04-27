@@ -91,4 +91,14 @@
 		<servlet-name>Emprunt</servlet-name>
 		<url-pattern>/Reservation</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Ajout</servlet-name>
+		<servlet-class>servlets.AjoutObjet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Ajout</servlet-name>
+		<url-pattern>/Ajouter-objet</url-pattern>
+	</servlet-mapping>
 </web-app>
