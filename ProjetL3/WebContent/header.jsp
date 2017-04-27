@@ -12,25 +12,25 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="accueil">Projet L3</a>
+			<a class="navbar-brand" href="<%=request.getContextPath()%>/accueil">Projet L3</a>
 		</div>
 
 
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="${class1}"><a href="accueil">Liste ${te1}</a></li>
+				<li class="${class1}"><a href="<%=request.getContextPath()%>/accueil">Liste ${te1}</a></li>
 				<c:if test="${!empty sessionScope.sessionUtilisateur}">
-					<li class="${class2}"><a href="Reservation">Réserver ${te2}</a></li>
-					<li class="${class3}"><a href="Rendre">Rendre ${te3}</a></li>
+					<li class="${class2}"><a href="<%=request.getContextPath()%>/Reservation">Réserver ${te2}</a></li>
+					<li class="${class3}"><a href="<%=request.getContextPath()%>/Rendre">Rendre ${te3}</a></li>
 				</c:if>
 
 			</ul>
 			<c:choose>
 				<c:when test="${empty sessionScope.sessionUtilisateur}">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="inscription">S'inscrire</a></li>
+						<li><a href="<%=request.getContextPath()%>/inscription">S'inscrire</a></li>
 					</ul>
-					<form id="signin" class="navbar-form navbar-right" role="form" method="post" action="accueil">
+					<form id="signin" class="navbar-form navbar-right" role="form" method="post" action="<%=request.getContextPath()%>/accueil">
 						<div class="input-group
 						<c:if test="${!empty form.erreurs['email']}">
 								has-error
@@ -66,7 +66,7 @@
 									class="glyphicon glyphicon-chevron-down"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="logout">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+								<li><a href="<%=request.getContextPath()%>/logout">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
 							</ul></li>
 					</ul>
 				</c:otherwise>

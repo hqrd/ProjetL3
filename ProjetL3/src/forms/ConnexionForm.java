@@ -114,6 +114,7 @@ public final class ConnexionForm {
 			} else {
 				user.setNom(resultat.getString("nom"));
 				user.setPrenom(resultat.getString("prenom"));
+				user.setRole(resultat.getString("role"));
 			}
 
 		} catch (SQLException e) {
