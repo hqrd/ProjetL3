@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import beans.Objet;
 import beans.Utilisateur;
+import forms.AjouterForm;
 import forms.ConnexionForm;
 
 public class AjoutObjet extends HttpServlet {
@@ -38,8 +39,8 @@ public class AjoutObjet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Objet o = new Objet();
-		o.ajouterBDD(request);
+		AjouterForm form = new AjouterForm();
+		form.validation(request);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 

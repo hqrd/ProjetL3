@@ -324,7 +324,7 @@ public class Objet {
 		return id;
 	}
 
-	public void ajouterBDD(HttpServletRequest request) {
+	public static void ajouterBDD(HttpServletRequest request) throws SQLException {
 		Connection connexion = null;
 		PreparedStatement statement = null;
 		try {
@@ -336,14 +336,11 @@ public class Objet {
 			String qtite_tmp = request.getParameter("quantite");
 			int qtite = (int) Integer.parseInt(qtite_tmp);
 
-			System.out.println("intitule : " + intitule + "\nqtite = " + qtite);
-			statement = connexion.prepareStatement("Insert into Objet (intitule, qtiterest) values" + "(?,?);");
-
 			statement.setString(1, intitule);
 			statement.setInt(2, qtite);
 			statement.executeUpdate();
-		} catch (Exception e) {
-
+		} catch (SQLException e) {
+			throw new SQLException("Impossible de créer cette objet, il existe déjà");
 		} finally {
 			SqlUtil.close(statement);
 			SqlUtil.close(connexion);
