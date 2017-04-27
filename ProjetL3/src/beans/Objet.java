@@ -1,25 +1,49 @@
 package beans;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.SqlUtil;
 
 public class Objet {
 
-	public static final String ATT_SESSION_USER = "sessionUtilisateur";
+	private Integer				id;
+	private String				intitule;
+	private Integer				qtiterest;
+
+	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
+
+	public Objet(String intitule, Integer qtiterest) {
+		this.intitule = intitule;
+		this.qtiterest = qtiterest;
+	}
 
 	public Objet() {
 	}
 
+	public String getIntitule() {
+		return intitule;
+	}
+
+	public void setIntitule(String intitule) {
+		this.intitule = intitule;
+	}
+
+	public Integer getQtiterest() {
+		return qtiterest;
+	}
+
+	public void setQtiterest(Integer qtiterest) {
+		this.qtiterest = qtiterest;
+	}
+
 	public void listeObjet(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+
 		Connection connexion = null;
 		ResultSet resultat = null;
 		PreparedStatement statement = null;
@@ -33,10 +57,21 @@ public class Objet {
 			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantité</th><th>Actions	 </th></tr></thead><tbody>";
 			while (resultat.next()) {
 				String nom = resultat.getString("intitule");
-				String qtite = resultat.getString("qtiterest");
-				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
-						+ "<button type='button' class='btn btn-default btn-sm'>Réserver</button>"
-						+ "<button type='button' class='btn btn-default btn-sm'>Rendre</button>" + "</td>";
+				Integer qtite = resultat.getInt("qtiterest");
+				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>";
+
+				if (qtite > 0)
+					message += "<a href='Reservation'><button type='button' class='btn btn-default btn-sm'>Réserver</button></a>";
+
+				if (user != null) {
+					try {
+						if (user.getObjets(nom) > 0)
+							message += "<a href='Rendre'><button type='button' class='btn btn-default btn-sm'>Rendre</button></a>";
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				message += "</td>";
 			}
 			message += "</tbody>";
 			message += "</table>";
@@ -91,7 +126,6 @@ public class Objet {
 
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
-		String username = user.getNom();
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -108,15 +142,16 @@ public class Objet {
 			SqlUtil.close(statement);
 
 			statement = connexion.prepareStatement(
-					"insert into emprunt (nom_user,id_objet,qtite_emprunt,rendu) values (?,?,?,false);");
+					"insert into emprunt (id_user,id_objet,qtite_emprunt,rendu) values (?,?,?,false);");
 
-			statement.setString(1, username);
+			statement.setInt(1, user.getId());
 			statement.setInt(2, id);
 			statement.setInt(3, qtite);
 
-			statement.executeQuery();
+			statement.executeUpdate();
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new Exception("Erreur lors l'emprunt, Il n'y en pas assez");
 		} finally {
 			SqlUtil.close(statement);
@@ -127,7 +162,6 @@ public class Objet {
 	public void listeEmprunt(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
-		String username = user.getNom();
 
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -138,9 +172,9 @@ public class Objet {
 			/////////////////// A rendre ////////////////////////////
 			statement = connexion
 					.prepareStatement("select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = false");
+							+ "emprunt join objet on id_objet = objet.id where id_User = ? and rendu = false");
 
-			statement.setString(1, username);
+			statement.setInt(1, user.getId());
 
 			resultat = statement.executeQuery();
 
@@ -165,8 +199,8 @@ public class Objet {
 			//////////////////// Historique ////////////////////////////////
 			statement = connexion
 					.prepareStatement("select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where nom_User = ? and rendu = true");
-			statement.setString(1, username);
+							+ "emprunt join objet on id_objet = objet.id where id_user = ? and rendu = true");
+			statement.setInt(1, user.getId());
 
 			resultat = statement.executeQuery();
 
@@ -222,5 +256,70 @@ public class Objet {
 			SqlUtil.close(connexion);
 		}
 	}
-	
+
+	public static Objet findByIntitule(String intitule) throws Exception {
+		Connection connexion = null;
+		ResultSet resultat = null;
+		PreparedStatement statement = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement("SELECT * FROM objet WHERE intitule = ?");
+			statement.setString(1, intitule);
+			resultat = statement.executeQuery();
+
+			if (resultat.next()) {
+				Objet objet = new Objet(resultat.getString("intitule"), resultat.getInt("qtiterest"));
+
+				return objet;
+			} else
+				return null;
+		} catch (SQLException e) {
+			throw new Exception("erreur : " + e.getMessage());
+		} finally {
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+	}
+
+	/**
+	 * Récupère l'ID d'un objet en BDD si il n'est pas dans l'Objet
+	 * 
+	 * @return l'id d'un objet, ou null si pas trouvé
+	 * @throws Exception
+	 */
+	public Integer getId() {
+		if (this.id != null) {
+			return this.id;
+		} else {
+			Connection connexion = null;
+			ResultSet resultat = null;
+			PreparedStatement statement = null;
+			try {
+				connexion = SqlUtil.getConnection();
+
+				statement = connexion.prepareStatement("SELECT * FROM Objet WHERE intitule = ?");
+				statement.setString(1, this.getIntitule());
+				resultat = statement.executeQuery();
+
+				if (resultat.next()) {
+					this.id = resultat.getInt("ID");
+					return this.id;
+				} else
+					return null;
+			} catch (SQLException e) {
+				try {
+					throw new Exception("erreur : " + e.getMessage());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			} finally {
+				SqlUtil.close(resultat);
+				SqlUtil.close(statement);
+				SqlUtil.close(connexion);
+			}
+		}
+		return id;
+	}
 }
