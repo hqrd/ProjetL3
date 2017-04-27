@@ -21,24 +21,20 @@ public class AjoutObjet extends HttpServlet {
 	public static final String	ATT_FORM			= "form";
 	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
-	public static final String VUE = "/WEB-INF/ajoutObjet" + ".jsp";
+	public static final String	VUE					= "/WEB-INF/admin/ajoutObjet" + ".jsp";
 
 	private void setActiveMenu(HttpServletRequest request) {
-		request.setAttribute("te1", "<span class='sr-only'>(current)</span>");
-		request.setAttribute("class1", "active");
-		request.setAttribute("te2", "");
-		request.setAttribute("class2", "");
-		request.setAttribute("te3", "");
-		request.setAttribute("class3", "");
+		request.setAttribute("te4", "<span class='sr-only'>(current)</span>");
+		request.setAttribute("class4", "active");
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		setActiveMenu(request);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		setActiveMenu(request);
 		AjouterForm form = new AjouterForm();
 		form.validation(request);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);

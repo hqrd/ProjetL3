@@ -20,6 +20,9 @@
 			<ul class="nav navbar-nav">
 				<li class="${class1}"><a href="<%=request.getContextPath()%>/accueil">Liste ${te1}</a></li>
 				<c:if test="${!empty sessionScope.sessionUtilisateur}">
+					<c:if test="${sessionScope.sessionUtilisateur.getRole() == 'admin'}">
+						<li class="${class4}"><a href="<%=request.getContextPath()%>/admin/Ajouter-objet">Ajouter ${te4}</a></li>
+					</c:if>
 					<li class="${class2}"><a href="<%=request.getContextPath()%>/Reservation">Réserver ${te2}</a></li>
 					<li class="${class3}"><a href="<%=request.getContextPath()%>/Rendre">Rendre ${te3}</a></li>
 				</c:if>
@@ -30,7 +33,8 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="<%=request.getContextPath()%>/inscription">S'inscrire</a></li>
 					</ul>
-					<form id="signin" class="navbar-form navbar-right" role="form" method="post" action="<%=request.getContextPath()%>/accueil">
+					<form id="signin" class="navbar-form navbar-right" role="form" method="post"
+						action="<%=request.getContextPath()%>/accueil">
 						<div class="input-group
 						<c:if test="${!empty form.erreurs['email']}">
 								has-error
@@ -66,7 +70,8 @@
 									class="glyphicon glyphicon-chevron-down"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a href="<%=request.getContextPath()%>/logout">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+								<li><a href="<%=request.getContextPath()%>/logout">Sign Out <span
+											class="glyphicon glyphicon-log-out pull-right"></span></a></li>
 							</ul></li>
 					</ul>
 				</c:otherwise>

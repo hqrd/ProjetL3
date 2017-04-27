@@ -42,10 +42,12 @@ public class RestrictionAdminFilter implements Filter {
 		} else {
 			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 			System.out.println(user.getRole());
-			if (user.getRole() != "admin")
-				request.getRequestDispatcher(ACCES_ACCUEIL).forward(request, response);
-			else
+			System.out.println(user.isAdmin());
+			if (user.isAdmin()) {
 				chain.doFilter(request, response);
+			} else {
+				request.getRequestDispatcher(ACCES_ACCUEIL).forward(request, response);
+			}
 		}
 	}
 
