@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import util.SqlUtil;
 
 public class Utilisateur {
+	private Integer	id;
 	private String	nom;
 	private String	prenom;
 	private String	email;
@@ -55,7 +56,7 @@ public class Utilisateur {
 	}
 
 	public String toString() {
-		return "Nom : " + nom + " PSWD : " + motDePasse;
+		return "Email : " + email + " nom : " + nom + " prenom : " + prenom;
 	}
 
 	public static Utilisateur findByEmail(String email) throws Exception {
@@ -76,6 +77,79 @@ public class Utilisateur {
 				return utilisateur;
 			} else
 				return null;
+		} catch (SQLException e) {
+			throw new Exception("erreur : " + e.getMessage());
+		} finally {
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+	}
+
+	/**
+	 * Récupère l'ID d'un utilisateur en BDD si il n'est pas dans l'Objet
+	 * 
+	 * @return l'id d'un utilisateur, ou null si pas trouvé
+	 * @throws Exception
+	 */
+	public Integer getId() {
+		if (this.id != null) {
+			return this.id;
+		} else {
+			Connection connexion = null;
+			ResultSet resultat = null;
+			PreparedStatement statement = null;
+			try {
+				connexion = SqlUtil.getConnection();
+
+				statement = connexion.prepareStatement("SELECT * FROM Utilisateur WHERE email = ?");
+				statement.setString(1, this.getEmail());
+				resultat = statement.executeQuery();
+
+				if (resultat.next()) {
+					this.id = resultat.getInt("ID");
+					return this.id;
+				} else
+					return null;
+			} catch (SQLException e) {
+				try {
+					throw new Exception("erreur : " + e.getMessage());
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			} finally {
+				SqlUtil.close(resultat);
+				SqlUtil.close(statement);
+				SqlUtil.close(connexion);
+			}
+		}
+		return id;
+	}
+
+	/**
+	 * Renvoie le nombre d'objets reservés par un utilisateur en fonction du nom de l'objet
+	 * 
+	 * @param intitule
+	 * @return le nombre d'objets reservés
+	 * @throws Exception 
+	 */
+	public int getObjets(String intitule) throws Exception {
+		Connection connexion = null;
+		ResultSet resultat = null;
+		PreparedStatement statement = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement(
+					"SELECT SUM(qtite_emprunt) as nb_res FROM emprunt WHERE ID_USER = ? AND ID_OBJET = ? AND rendu = false");
+			statement.setInt(1, this.getId());
+			statement.setInt(2, Objet.findByIntitule(intitule).getId());
+			resultat = statement.executeQuery();
+
+			if (resultat.next()) {
+				return resultat.getInt("nb_res");
+			} else
+				return 0;
 		} catch (SQLException e) {
 			throw new Exception("erreur : " + e.getMessage());
 		} finally {
