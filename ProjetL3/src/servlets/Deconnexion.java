@@ -22,8 +22,7 @@ public class Deconnexion extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        request.getSession().invalidate();
-        Objet o = new Objet();
-		o.listeObjet(request);
+		Objet.listeObjet(request);
 		request.setAttribute("te1", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class1", "active");
 		request.setAttribute("te2", "");

@@ -22,8 +22,7 @@ public class Rendre extends HttpServlet {
 	public static final String VUE = "/WEB-INF/rendre.jsp";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Objet o = new Objet();
-		o.listeEmprunt(request);
+		Objet.listeEmprunt(request);
 		
 		request.setAttribute("te3", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class3", "active");
@@ -37,7 +36,6 @@ public class Rendre extends HttpServlet {
 	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 			
 		
-		Objet o = new Objet();
 		Enumeration <String> parametres = request.getParameterNames();
 		while(parametres.hasMoreElements())
         {
@@ -45,12 +43,12 @@ public class Rendre extends HttpServlet {
             String id_tmp = (request.getParameter(param));
             int id = (int) Integer.parseInt(id_tmp);
     		try {
-				o.rendreOjet(id);
+				Objet.rendreOjet(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
         }
-		o.listeEmprunt(request);
+		Objet.listeEmprunt(request);
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
 	    }
     
