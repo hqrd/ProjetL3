@@ -169,4 +169,8 @@ public class Utilisateur {
 		}
 	}
 
+	public boolean isAdmin() {
+		return (this.getRole().equals("admin"));
+	}
+
 }

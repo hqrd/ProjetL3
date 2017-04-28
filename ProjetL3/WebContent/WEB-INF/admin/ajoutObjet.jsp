@@ -11,18 +11,16 @@
 	<div class="container">
 		<form method="post" action="<%=request.getContextPath()%>/Ajouter-objet">
 			<fieldset>
-				<legend>Inscription</legend>
+				<legend>Ajouter un objet</legend>
 				<p>Vous pouvez ajouter un objet via ce formulaire.</p>
 
 				<div class="form-group row">
-					<label for="intitule" class="col-sm-3 col-form-label">Intitulé
-						de l'objet <span class="requis">*</span>
+					<label for="intitule" class="col-sm-3 col-form-label">Intitulé de l'objet <span class="requis">*</span>
 					</label>
 					<div class="col-sm-5">
-						<input class="form-control" type="text" id="intitule"
-							name="intitule" value="<c:out value="${utilisateur.email}"/>"
-							size="20" maxlength="60" /> <span
-							class="erreur">${form.erreurs['intitule']}</span> <br />
+						<input class="form-control" type="text" id="intitule" name="intitule"
+							value="<c:out value="${utilisateur.email}"/>" size="20"
+							maxlength="60" /> <br />
 					</div>
 				</div>
 
@@ -32,19 +30,16 @@
 					</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="number" id="quantite"
-							name="quantite" value="" size="20" maxlength="20" /> <span
-							class="erreur">${form.erreurs['quantite']}</span> <br />
+							name="quantite" value="" size="20" maxlength="20" /> </br>
 					</div>
 				</div>
 
-
+				
 
 				<div class="col-sm-offset-3 col-sm-9">
 					<input class="btn btn-primary" type="submit" value="Ajouter"
 						class="sansLabel" />
 				</div>
-				<p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
-
 				<br />
 
 			</fieldset>

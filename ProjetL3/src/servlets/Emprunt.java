@@ -1,5 +1,4 @@
 
-
 package servlets;
 
 import java.io.IOException;
@@ -7,15 +6,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import beans.Objet;
+import beans.Utilisateur;
 
 public class Emprunt extends HttpServlet {
 
-    /**
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	public static final String VUE = "/WEB-INF/emprunt.jsp";
+	private static final long	serialVersionUID	= 1L;
+	public static final String	VUE					= "/WEB-INF/emprunt.jsp";
+	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,30 +28,33 @@ public class Emprunt extends HttpServlet {
 		request.setAttribute("class3", "");
 		request.setAttribute("te1", "");
 		request.setAttribute("class1", "");
+
 		request.setAttribute("te4", "");
 		request.setAttribute("class4", "");
 		
+
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 
 	}
-	
-	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getParameter("objet");
 		String[] tmp = request.getParameterValues("objet");
-		int id = Integer.parseInt(tmp[0]);
+		Integer id = Integer.parseInt(tmp[0]);
 		String qtite_tmp = request.getParameter("nb");
-		int qtite = Integer.parseInt(qtite_tmp);
-		Objet o = new Objet();
+		Integer qtite = -1;
 		try {
-			o.emprunterObjet(request,id,qtite);
+			qtite = Integer.parseInt(qtite_tmp);
+			HttpSession session = request.getSession();
+			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+			Objet.emprunterObjet(user, id, qtite);
 		} catch (Exception e) {
 			System.out.println(e);
 			e.printStackTrace();
-			request.setAttribute("err_emprunt", e.getMessage());
+			request.setAttribute("err_emprunt", "Erreur : " + e.getMessage());
 		}
-		o.selectObj(request);
-	    this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
-	    }
-    
-	
+		Objet.selectObj(request);
+		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+	}
+
 }

@@ -108,6 +108,6 @@
 
 	<servlet-mapping>
 		<servlet-name>Ajout</servlet-name>
-		<url-pattern>/Ajouter-objet</url-pattern>
+		<url-pattern>/admin/Ajouter-objet</url-pattern>
 	</servlet-mapping>
 </web-app>

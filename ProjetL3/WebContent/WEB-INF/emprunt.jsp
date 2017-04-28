@@ -17,7 +17,7 @@
 
 			<div id="spin-nb" class="input-group spinner">
 
-				<input type="text" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
+				<input type="number" class="form-control" id="nb" name="nb" value="1" min="1" max="40">
 				<div class="input-group-btn">
 					<button class="btn btn-default" type="button">
 						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
