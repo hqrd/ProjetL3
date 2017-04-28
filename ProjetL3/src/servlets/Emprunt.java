@@ -26,6 +26,8 @@ public class Emprunt extends HttpServlet {
 		request.setAttribute("class3", "");
 		request.setAttribute("te1", "");
 		request.setAttribute("class1", "");
+		request.setAttribute("te4", "");
+		request.setAttribute("class4", "");
 		
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 

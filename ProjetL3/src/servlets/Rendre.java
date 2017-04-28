@@ -30,6 +30,8 @@ public class Rendre extends HttpServlet {
 		request.setAttribute("class2", "");
 		request.setAttribute("te1", "");
 		request.setAttribute("class1", "");
+		request.setAttribute("te4", "");
+		request.setAttribute("class4", "");
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 	

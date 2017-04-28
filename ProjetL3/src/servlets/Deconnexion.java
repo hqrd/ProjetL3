@@ -29,6 +29,8 @@ public class Deconnexion extends HttpServlet {
 		request.setAttribute("class2", "");
 		request.setAttribute("te3", "");
 		request.setAttribute("class3", "");
+		request.setAttribute("te4", "");
+		request.setAttribute("class4", "");
 		response.sendRedirect( request.getContextPath() + "/accueil" );
 
 	}
