@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container">
-		<form method="post" action="<%=request.getContextPath()%>/Ajouter-objet">
+		<form method="post" action="<%=request.getContextPath()%>/admin/Ajouter-objet">
 			<fieldset>
 				<legend>Ajouter un objet</legend>
 				<p>Vous pouvez ajouter un objet via ce formulaire.</p>
