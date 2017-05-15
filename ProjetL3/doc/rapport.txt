@@ -87,4 +87,14 @@ CREATE TABLE OBJET
 INSERT INTO OBJET (ID,INTITULE,QTITEREST)
 VALUES (1,'Table',17);
 
+ALTER TABLE emprunt ADD CONSTRAINT fk_id_user
+    FOREIGN KEY (id_user) REFERENCES utilisateur(id)
+    ON UPDATE cascade
+    ON DELETE cascade;
+	
+ALTER TABLE emprunt ADD CONSTRAINT fk_id_objet
+    FOREIGN KEY (id_objet) REFERENCES objet(id)
+    ON UPDATE cascade
+    ON DELETE cascade;
+	
 update utilisateur set role = 'admin';

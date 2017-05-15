@@ -91,6 +91,7 @@
 		<url-pattern>/Rendre</url-pattern>
 	</servlet-mapping>
 
+	
 	<servlet>
 		<servlet-name>Emprunt</servlet-name>
 		<servlet-class>servlets.Emprunt</servlet-class>
@@ -109,5 +110,16 @@
 	<servlet-mapping>
 		<servlet-name>Ajout</servlet-name>
 		<url-pattern>/admin/Ajouter-objet</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>Supprimer</servlet-name>
+		<servlet-class>servlets.Supprimer</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Supprimer</servlet-name>
+		<url-pattern>/admin/Supprimer</url-pattern>
 	</servlet-mapping>
 </web-app>

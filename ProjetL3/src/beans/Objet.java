@@ -52,7 +52,7 @@ public class Objet {
 		try {
 			connexion = SqlUtil.getConnection();
 
-			statement = connexion.prepareStatement("select intitule,qtiterest from objet");
+			statement = connexion.prepareStatement("select * from objet");
 
 			resultat = statement.executeQuery();
 
@@ -60,7 +60,8 @@ public class Objet {
 			while (resultat.next()) {
 				String nom = resultat.getString("intitule");
 				Integer qtite = resultat.getInt("qtiterest");
-				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>";
+				Integer id = resultat.getInt("id");
+				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td><div class='row'><div class='col-sm-6'>";
 
 				if (qtite > 0)
 					message += "<a href='Reservation'><button type='button' class='btn btn-default btn-sm'>Réserver</button></a>";
@@ -69,11 +70,16 @@ public class Objet {
 					try {
 						if (user.getObjets(nom) > 0)
 							message += "<a href='Rendre'><button type='button' class='btn btn-default btn-sm'>Rendre</button></a>";
+						if (user.isAdmin()) {
+							message += "</div><div class='col-sm-6'><form id='supprimer' role='form' method='post' action='admin/Supprimer'>"
+									+ "<button type='submit' id='" + id + "' name='" + id + "' value='" + id
+									+ "' type='button' class='btn btn-default btn-sm'>Supprimer tout les objets</button></form>";
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				message += "</td>";
+				message += "</div></div></td>";
 			}
 			message += "</tbody>";
 			message += "</table>";
@@ -186,8 +192,8 @@ public class Objet {
 				String qtite = resultat.getString("qtite_emprunt");
 				int id = resultat.getInt("id");
 				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
-						+ "<form id='signin' class='navbar-form navbar' role='form' method='post' action='Rendre'>"
-						+ "<button id='" + id + "' name='" + id + "' value='" + id
+						+ "<form id='signin' role='form' method='post' action='Rendre'>" + "<button id='" + id
+						+ "' name='" + id + "' value='" + id
 						+ "' class='btn btn-primary'>Rendre</button></form></td></tr>";
 			}
 			message += "</tbody>";
@@ -323,7 +329,6 @@ public class Objet {
 		return id;
 	}
 
-
 	public static void ajouterBDD(String intitule, int qtite) throws SQLException {
 
 		Connection connexion = null;
@@ -342,6 +347,25 @@ public class Objet {
 			SqlUtil.close(statement);
 			SqlUtil.close(connexion);
 		}
+	}
+
+	public static void supprimerObjet(int id) throws SQLException {
+		Connection connexion = null;
+		PreparedStatement statement = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement("DELETE FROM Objet WHERE id=?");
+
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new SQLException("Erreur lors de la suppression");
+		} finally {
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+
 	}
 
 }
