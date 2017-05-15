@@ -73,7 +73,7 @@ public class Connexion extends HttpServlet {
 
 		}
 
-		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+		this.doGet(request, response);
 	}
 
 }

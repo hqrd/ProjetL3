@@ -72,8 +72,8 @@ public class Objet {
 							message += "<a href='Rendre'><button type='button' class='btn btn-default btn-sm'>Rendre</button></a>";
 						if (user.isAdmin()) {
 							message += "</div><div class='col-sm-6'><form id='supprimer' role='form' method='post' action='admin/Supprimer'>"
-									+ "<button type='submit' id='" + id + "' name='" + id + "' value='" + id
-									+ "' type='button' class='btn btn-default btn-sm'>Supprimer tout les objets</button></form>";
+									+ "<button type='submit' id='" + id + "' name='id_delete' value='" + id
+									+ "' type='button' class='btn btn-danger btn-sm'>Supprimer tout les objets</button></form>";
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -193,7 +193,7 @@ public class Objet {
 				int id = resultat.getInt("id");
 				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
 						+ "<form id='signin' role='form' method='post' action='Rendre'>" + "<button id='" + id
-						+ "' name='" + id + "' value='" + id
+						+ "' name='id_rendre' value='" + id
 						+ "' class='btn btn-primary'>Rendre</button></form></td></tr>";
 			}
 			message += "</tbody>";

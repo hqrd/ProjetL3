@@ -30,7 +30,6 @@ public class AjoutObjet extends HttpServlet {
 		request.setAttribute("class2", "");
 		request.setAttribute("te3", "");
 		request.setAttribute("class3", "");
-		System.out.println(request.getContextPath());
 
 		request.setAttribute("te4", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class4", "active");
