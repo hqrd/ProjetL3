@@ -9,18 +9,20 @@
 </head>
 <body>
 	<div class="container">
-		<form method="post" action="<%=request.getContextPath()%>/admin/Ajouter-objet">
+		<form method="post"
+			action="<%=request.getContextPath()%>/admin/Ajouter-objet">
 			<fieldset>
 				<legend>Ajouter un objet</legend>
 				<p>Vous pouvez ajouter un objet via ce formulaire.</p>
 
 				<div class="form-group row">
-					<label for="intitule" class="col-sm-3 col-form-label">Intitulé de l'objet <span class="requis">*</span>
+					<label for="intitule" class="col-sm-3 col-form-label">Intitulé
+						de l'objet <span class="requis">*</span>
 					</label>
 					<div class="col-sm-5">
-						<input class="form-control" type="text" id="intitule" name="intitule"
-							value="<c:out value="${utilisateur.email}"/>" size="20"
-							maxlength="60" /> <br />
+						<input class="form-control" type="text" id="intitule"
+							name="intitule" value="" size="20" maxlength="60" /> <br /> <span
+							class="erreur">${form.erreurs['intitule']}</span> <br />
 					</div>
 				</div>
 
@@ -30,11 +32,13 @@
 					</label>
 					<div class="col-sm-5">
 						<input class="form-control" type="number" id="quantite"
-							name="quantite" value="" size="20" maxlength="20" /> </br>
+							name="quantite" value="" size="20" maxlength="20" /> </br> <span
+							class="erreur">${form.erreurs['quantite']}</span> <br />
+
 					</div>
 				</div>
 
-				
+
 
 				<div class="col-sm-offset-3 col-sm-9">
 					<input class="btn btn-primary" type="submit" value="Ajouter"
