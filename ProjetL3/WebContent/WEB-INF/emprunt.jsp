@@ -33,7 +33,6 @@
 			<div>
 				<button class="btn btn-block btn-primary" type="submit">Emprunter</button>
 			</div>
-			<span class="erreur">${err_emprunt}</span>
 		</form>
 	</div>
 </body>

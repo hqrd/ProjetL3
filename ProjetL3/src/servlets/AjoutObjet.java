@@ -6,11 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import beans.Objet;
-import beans.Utilisateur;
 import forms.AjouterForm;
-import forms.ConnexionForm;
 
 public class AjoutObjet extends HttpServlet {
 	/**
@@ -30,7 +26,6 @@ public class AjoutObjet extends HttpServlet {
 		request.setAttribute("class2", "");
 		request.setAttribute("te3", "");
 		request.setAttribute("class3", "");
-		System.out.println(request.getContextPath());
 
 		request.setAttribute("te4", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class4", "active");

@@ -80,7 +80,28 @@
 	</div>
 </nav>
 
+<c:if test="${!empty success_message}">
+	<div class="text-center alert alert-success">${success_message}</div>
+</c:if>
+
+<c:if test="${!empty info_message}">
+	<div class="text-center alert alert-info">${info_message}</div>
+</c:if>
+
+<c:if test="${!empty warning_message}">
+	<div class="text-center alert alert-warning">${warning_message}</div>
+</c:if>
+
+<c:if test="${!empty danger_message}">
+	<div class="text-center alert alert-danger">${danger_message}</div>
+</c:if>
+
 <link href="<c:url value="/resources/bootstrap/css/bootstrap.css" />" rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/main.css" />" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<c:url value="/resources/jquery.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/bootstrap.min.js" />"></script>
+<script>
+	$(document).ready(function() {
+		$('.alert').delay(5000).fadeOut(400);
+	});
+</script>
