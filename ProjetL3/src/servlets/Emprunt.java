@@ -31,7 +31,6 @@ public class Emprunt extends HttpServlet {
 
 		request.setAttribute("te4", "");
 		request.setAttribute("class4", "");
-		
 
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 
@@ -48,13 +47,13 @@ public class Emprunt extends HttpServlet {
 			HttpSession session = request.getSession();
 			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 			Objet.emprunterObjet(user, id, qtite);
+			request.setAttribute("success_message", "Emprunt réussi : " + qtite + " " + Objet.getIntituleFromId(id));
 		} catch (Exception e) {
-			System.out.println(e);
 			e.printStackTrace();
-			request.setAttribute("err_emprunt", "Erreur : " + e.getMessage());
+			request.setAttribute("warning_message", "Erreur :test " + e.getMessage());
 		}
-		Objet.selectObj(request);
-		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
+
+		this.doGet(request, response);
 	}
 
 }

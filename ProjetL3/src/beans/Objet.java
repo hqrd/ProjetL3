@@ -368,4 +368,33 @@ public class Objet {
 
 	}
 
+	public static String getIntituleFromId(Integer id){
+		Connection connexion = null;
+		ResultSet resultat = null;
+		PreparedStatement statement = null;
+		String intitule = null;
+		try {
+			connexion = SqlUtil.getConnection();
+
+			statement = connexion.prepareStatement("SELECT * FROM Objet WHERE id = ?");
+			statement.setInt(1,id);
+			resultat = statement.executeQuery();
+
+			if (resultat.next()) {
+				intitule= resultat.getString("intitule");
+			} else
+				intitule= null;
+		} catch (SQLException e) {
+			try {
+				throw new Exception("erreur : " + e.getMessage());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			SqlUtil.close(resultat);
+			SqlUtil.close(statement);
+			SqlUtil.close(connexion);
+		}
+		return intitule;
+	}
 }
