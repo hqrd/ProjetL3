@@ -2,16 +2,9 @@ package forms;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import beans.Objet;
-import beans.Utilisateur;
-import util.SqlUtil;
 
 public final class AjouterForm {
 
