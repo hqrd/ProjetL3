@@ -23,8 +23,10 @@ public class Supprimer extends HttpServlet {
 		int id = (int) Integer.parseInt(id_tmp);
 		try {
 			Objet.supprimerObjet(id);
+			request.setAttribute("success_message", Objet.getIntituleFromId(id) + " rendu");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("warning_message", "Erreur : " + e.getMessage());
 		}
 
 		response.sendRedirect(request.getContextPath() + "/accueil");

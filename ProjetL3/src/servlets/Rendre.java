@@ -36,8 +36,10 @@ public class Rendre extends HttpServlet {
 		int id = (int) Integer.parseInt(id_tmp);
 		try {
 			Objet.rendreOjet(id);
+			request.setAttribute("success_message", Objet.getIntituleFromId(id) + " rendu");
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("warning_message", "Erreur : " + e.getMessage());
 		}
 
 		Objet.listeEmprunt(request);

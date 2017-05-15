@@ -50,7 +50,7 @@ public class Emprunt extends HttpServlet {
 			request.setAttribute("success_message", "Emprunt réussi : " + qtite + " " + Objet.getIntituleFromId(id));
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("warning_message", "Erreur :test " + e.getMessage());
+			request.setAttribute("warning_message", "Erreur : " + e.getMessage());
 		}
 
 		this.doGet(request, response);
