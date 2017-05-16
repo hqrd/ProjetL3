@@ -5,10 +5,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import util.SqlUtil;
+import util.Utils;
 
 public class Objet {
 
@@ -211,22 +213,29 @@ public class Objet {
 			connexion = SqlUtil.getConnection();
 
 			/////////////////// A rendre ////////////////////////////
-			statement = connexion
-					.prepareStatement("select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu from "
+			statement = connexion.prepareStatement(
+					"select emprunt.id as id,objet.intitule as nom, qtite_emprunt, rendu, date_emprunt from "
 							+ "emprunt join objet on id_objet = objet.id where id_User = ? and rendu = false");
 
 			statement.setInt(1, user.getId());
 
 			resultat = statement.executeQuery();
 
-			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Rendre</th></tr></thead><tbody>";
+			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Emprunté le</th><th>Rendre</th></tr></thead><tbody>";
 
 			while (resultat.next()) {
 
 				String nom = resultat.getString("nom");
 				String qtite = resultat.getString("qtite_emprunt");
 				int id = resultat.getInt("id");
-				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>"
+
+				String date_emprunt = null;
+				try {
+					date_emprunt = Utils.formatDate(resultat.getString("date_emprunt"), false);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				message += "<tr><td>" + nom + "</td><td>" + qtite + "</td><td>" + date_emprunt + "</td><td>"
 						+ "<form id='signin' role='form' method='post' action='Rendre'>" + "<button id='" + id
 						+ "' name='id_rendre' value='" + id
 						+ "' class='btn btn-primary'>Rendre</button></form></td></tr>";
@@ -238,20 +247,27 @@ public class Objet {
 			SqlUtil.close(resultat);
 
 			//////////////////// Historique ////////////////////////////////
-			statement = connexion
-					.prepareStatement("select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu from "
-							+ "emprunt join objet on id_objet = objet.id where id_user = ? and rendu = true");
+			statement = connexion.prepareStatement(
+					"select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu, date_rendu, date_emprunt from "
+							+ "emprunt join objet on id_objet = objet.id where id_user = ? and rendu = true ORDER BY date_emprunt DESC LIMIT 5");
 			statement.setInt(1, user.getId());
 
 			resultat = statement.executeQuery();
 
 			message += "<h2>Historique</h2><table class='table table-hover'>	"
-					+ "<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Rendu</th></tr></thead><tbody>";
+					+ "<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Emprunté le</th><th>Rendu le</th></tr></thead><tbody>";
 			while (resultat.next()) {
 				String id = resultat.getString("nom");
 				String qtite = resultat.getString("qtite_emprunt");
-				String re = "Rendu";
-				message += "<tr><td>" + id + "</td><td>" + qtite + "</td><td>" + re + "</td></tr>";
+				String date_rendu = null, date_emprunt = null;
+				try {
+					date_rendu = Utils.formatDate(resultat.getString("date_rendu"), false);
+					date_emprunt = Utils.formatDate(resultat.getString("date_emprunt"), false);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				message += "<tr><td>" + id + "</td><td>" + qtite + "</td><td>" + date_emprunt + "</td><td>" + date_rendu
+						+ "</td></tr>";
 			}
 			message += "</tbody>";
 			message += "</table></br></br>";
