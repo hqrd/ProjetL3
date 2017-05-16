@@ -55,11 +55,12 @@ public final class AjouterForm {
 
 		{
 			resultat = "Succès de l'insertion";
+			request.setAttribute("success_message", "Succès de l'ajout : " + qtite + " " + intitule);
 		} else
 
 		{
 			resultat = "Echec de l'insertion";
-
+			request.setAttribute("danger_message", "Echec de l'ajout : " + qtite + " " + intitule);
 		}
 
 	}

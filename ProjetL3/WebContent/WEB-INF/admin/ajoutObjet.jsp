@@ -29,7 +29,8 @@
 				</div>
 
 				<div class="form-group row">
-					<label for="quantite" class="col-sm-3 col-form-label"> Quantité de l'objet <span class="requis">*</span>
+					<label for="quantite" class="col-sm-3 col-form-label">
+						Quantité de l'objet <span class="requis">*</span>
 					</label>
 					<div class="col-sm-5">
 
@@ -42,7 +43,8 @@
 
 
 				<div class="col-sm-offset-3 col-sm-9">
-					<input class="btn btn-primary" type="submit" value="Ajouter" class="sansLabel" />
+					<input class="btn btn-primary" type="submit" value="Ajouter"
+						class="sansLabel" />
 				</div>
 				<br />
 

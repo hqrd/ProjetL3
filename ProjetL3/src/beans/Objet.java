@@ -12,11 +12,11 @@ import util.SqlUtil;
 
 public class Objet {
 
-	private Integer				id;
-	private String				intitule;
-	private Integer				qtiterest;
+	private Integer	id;
+	private String	intitule;
+	private Integer	qtiterest;
 
-	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
+	public static final String ATT_SESSION_USER = "sessionUtilisateur";
 
 	public Objet(String intitule, Integer qtiterest) {
 		this.intitule = intitule;
@@ -243,15 +243,14 @@ public class Objet {
 
 			resultat = statement.executeQuery();
 
-			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
-
+			String message = "<label for='objet'>Objet</label>";
+			message += "<select class='form-control' name='objet' ><option selected value ='0'>Choisir</option>";
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String intitule = resultat.getString("intitule");
 				message += "<option value='" + id + "'>" + intitule + "</option>";
 			}
-
-			message += "</select><label for='objet'>Objet</label>";
+			message += "</select>";
 
 			request.setAttribute("tab", message);
 		} catch (SQLException e) {
@@ -368,7 +367,7 @@ public class Objet {
 
 	}
 
-	public static String getIntituleFromId(Integer id){
+	public static String getIntituleFromId(Integer id) {
 		Connection connexion = null;
 		ResultSet resultat = null;
 		PreparedStatement statement = null;
@@ -377,13 +376,13 @@ public class Objet {
 			connexion = SqlUtil.getConnection();
 
 			statement = connexion.prepareStatement("SELECT * FROM Objet WHERE id = ?");
-			statement.setInt(1,id);
+			statement.setInt(1, id);
 			resultat = statement.executeQuery();
 
 			if (resultat.next()) {
-				intitule= resultat.getString("intitule");
+				intitule = resultat.getString("intitule");
 			} else
-				intitule= null;
+				intitule = null;
 		} catch (SQLException e) {
 			try {
 				throw new Exception("erreur : " + e.getMessage());
