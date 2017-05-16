@@ -67,8 +67,6 @@
 					<input class="btn btn-primary" type="submit" value="Inscription" class="sansLabel" />
 				</div>
 				<br />
-
-				<p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
 			</fieldset>
 		</form>
 	</div>
