@@ -3,6 +3,7 @@ package servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import beans.Objet;
 import beans.Utilisateur;
 import forms.ConnexionForm;
 
+@WebServlet(name = "Connexion", urlPatterns = "/accueil")
 public class Connexion extends HttpServlet {
 	/**
 	 * 
@@ -35,9 +37,9 @@ public class Connexion extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Objet.listeObjet(request);
-		
+
 		setActiveMenu(request);
-		
+
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
@@ -45,9 +47,8 @@ public class Connexion extends HttpServlet {
 		/* Préparation de l'objet formulaire */
 		ConnexionForm form = new ConnexionForm();
 		Objet.listeObjet(request);
-		
+
 		setActiveMenu(request);
-		
 
 		/* Appel au traitement et à la validation de la requête, et récupération du bean en résultant */
 		Utilisateur utilisateur1 = null;
