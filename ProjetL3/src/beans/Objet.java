@@ -249,7 +249,7 @@ public class Objet {
 			//////////////////// Historique ////////////////////////////////
 			statement = connexion.prepareStatement(
 					"select emprunt.id, objet.intitule as nom, qtite_emprunt, rendu, date_rendu, date_emprunt from "
-							+ "emprunt join objet on id_objet = objet.id where id_user = ? and rendu = true ORDER BY date_emprunt DESC LIMIT 5");
+							+ "emprunt join objet on id_objet = objet.id where id_user = ? and rendu = true ORDER BY date_emprunt DESC");
 			statement.setInt(1, user.getId());
 
 			resultat = statement.executeQuery();
