@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import forms.AjouterForm;
 
-@WebServlet(name = "Ajout", urlPatterns = "/admin/Ajouter-objet")
+@WebServlet("/admin/Ajouter-objet")
 public class AjoutObjet extends HttpServlet {
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class AjoutObjet extends HttpServlet {
 		setActiveMenu(request);
 		AjouterForm form = new AjouterForm();
 		form.validation(request);
-		request.setAttribute( ATT_FORM, form );
+		request.setAttribute(ATT_FORM, form);
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 

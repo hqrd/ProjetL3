@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import beans.Utilisateur;
 import forms.InscriptionForm;
 
-@WebServlet(name = "Inscription", urlPatterns = "/inscription")
+@WebServlet("/inscription")
 public class Inscription extends HttpServlet {
 	/**
 	 * 

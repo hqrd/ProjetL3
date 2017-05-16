@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import beans.Objet;
 
-@WebServlet(name = "Rendre", urlPatterns = "/Rendre")
+@WebServlet("/Rendre")
 public class Rendre extends HttpServlet {
 
 	/**

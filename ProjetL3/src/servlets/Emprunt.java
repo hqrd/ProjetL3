@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import beans.Objet;
 import beans.Utilisateur;
 
-@WebServlet(name = "Emprunt", urlPatterns = "/Reservation")
+@WebServlet("/Reservation")
 public class Emprunt extends HttpServlet {
 
 	/**

@@ -12,7 +12,7 @@ import beans.Objet;
 import beans.Utilisateur;
 import forms.ConnexionForm;
 
-@WebServlet(name = "Connexion", urlPatterns = "/accueil")
+@WebServlet("/accueil")
 public class Connexion extends HttpServlet {
 	/**
 	 * 

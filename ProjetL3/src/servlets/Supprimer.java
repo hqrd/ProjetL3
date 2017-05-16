@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import beans.Objet;
 
-@WebServlet(name = "Supprimer", urlPatterns = "/admin/Supprimer")
+@WebServlet("/admin/Supprimer")
 public class Supprimer extends HttpServlet {
 	/**
 	 * 
