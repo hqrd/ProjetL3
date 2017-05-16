@@ -18,30 +18,52 @@ public class Objet {
 
 	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
+	/**
+	 * @param intitule
+	 * @param qtiterest
+	 */
 	public Objet(String intitule, Integer qtiterest) {
 		this.intitule = intitule;
 		this.qtiterest = qtiterest;
 	}
 
+	/**
+	 * 
+	 */
 	public Objet() {
 	}
 
+	/**
+	 * @return
+	 */
 	public String getIntitule() {
 		return intitule;
 	}
 
+	/**
+	 * @param intitule
+	 */
 	public void setIntitule(String intitule) {
 		this.intitule = intitule;
 	}
 
+	/**
+	 * @return
+	 */
 	public Integer getQtiterest() {
 		return qtiterest;
 	}
 
+	/**
+	 * @param qtiterest
+	 */
 	public void setQtiterest(Integer qtiterest) {
 		this.qtiterest = qtiterest;
 	}
 
+	/**
+	 * @param request
+	 */
 	public static void listeObjet(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
@@ -95,6 +117,10 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param id
+	 * @throws Exception
+	 */
 	public static void rendreOjet(int id) throws Exception {
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -127,6 +153,12 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param user
+	 * @param id
+	 * @param qtite
+	 * @throws Exception
+	 */
 	public static void emprunterObjet(Utilisateur user, Integer id, Integer qtite) throws Exception {
 		if (id == 0)
 			throw new Exception("Veuillez choisir un objet");
@@ -165,6 +197,9 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param request
+	 */
 	public static void listeEmprunt(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
@@ -231,6 +266,9 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param request
+	 */
 	public static void selectObj(HttpServletRequest request) {
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -263,6 +301,11 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param intitule
+	 * @return
+	 * @throws Exception
+	 */
 	public static Objet findByIntitule(String intitule) throws Exception {
 		Connection connexion = null;
 		ResultSet resultat = null;
@@ -329,6 +372,11 @@ public class Objet {
 		return id;
 	}
 
+	/**
+	 * @param intitule
+	 * @param qtite
+	 * @throws SQLException
+	 */
 	public static void ajouterBDD(String intitule, int qtite) throws SQLException {
 
 		Connection connexion = null;
@@ -349,6 +397,10 @@ public class Objet {
 		}
 	}
 
+	/**
+	 * @param id
+	 * @throws SQLException
+	 */
 	public static void supprimerObjet(int id) throws SQLException {
 		Connection connexion = null;
 		PreparedStatement statement = null;
@@ -368,7 +420,11 @@ public class Objet {
 
 	}
 
-	public static String getIntituleFromId(Integer id){
+	/**
+	 * @param id
+	 * @return
+	 */
+	public static String getIntituleFromId(Integer id) {
 		Connection connexion = null;
 		ResultSet resultat = null;
 		PreparedStatement statement = null;
@@ -377,13 +433,13 @@ public class Objet {
 			connexion = SqlUtil.getConnection();
 
 			statement = connexion.prepareStatement("SELECT * FROM Objet WHERE id = ?");
-			statement.setInt(1,id);
+			statement.setInt(1, id);
 			resultat = statement.executeQuery();
 
 			if (resultat.next()) {
-				intitule= resultat.getString("intitule");
+				intitule = resultat.getString("intitule");
 			} else
-				intitule= null;
+				intitule = null;
 		} catch (SQLException e) {
 			try {
 				throw new Exception("erreur : " + e.getMessage());
