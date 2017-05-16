@@ -14,11 +14,11 @@ import util.Utils;
 
 public class Objet {
 
-	private Integer				id;
-	private String				intitule;
-	private Integer				qtiterest;
+	private Integer	id;
+	private String	intitule;
+	private Integer	qtiterest;
 
-	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
+	public static final String ATT_SESSION_USER = "sessionUtilisateur";
 
 	/**
 	 * @param intitule
@@ -297,15 +297,14 @@ public class Objet {
 
 			resultat = statement.executeQuery();
 
-			String message = "<select class='form-control' name='objet'><option selected value ='0'>Choisir</option>";
-
+			String message = "<label for='objet'>Objet</label>";
+			message += "<select class='form-control' name='objet' ><option selected value ='0'>Choisir</option>";
 			while (resultat.next()) {
 				int id = resultat.getInt("id");
 				String intitule = resultat.getString("intitule");
 				message += "<option value='" + id + "'>" + intitule + "</option>";
 			}
-
-			message += "</select><label for='objet'>Objet</label>";
+			message += "</select>";
 
 			request.setAttribute("tab", message);
 		} catch (SQLException e) {
@@ -435,6 +434,7 @@ public class Objet {
 		}
 
 	}
+
 
 	/**
 	 * @param id

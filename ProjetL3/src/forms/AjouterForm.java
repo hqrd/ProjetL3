@@ -58,6 +58,7 @@ public final class AjouterForm {
 
 		{
 			resultat = "Echec de l'insertion";
+
 			request.setAttribute("warning_message", "Erreur : " + resultat);
 
 		}
