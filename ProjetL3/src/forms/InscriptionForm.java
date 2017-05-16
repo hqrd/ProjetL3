@@ -64,9 +64,11 @@ public final class InscriptionForm {
 			}
 		}
 		if (erreurs.isEmpty()) {
-			resultat = "Succès de l'inscription.";
+			resultat = "Inscription réussie";
+			request.setAttribute("success_message", resultat);
 		} else {
 			resultat = "Échec de l'inscription.";
+			request.setAttribute("warning_message", "Erreur : " + resultat);
 		}
 
 		return utilisateur;
