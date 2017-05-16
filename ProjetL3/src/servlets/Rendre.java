@@ -16,6 +16,9 @@ public class Rendre extends HttpServlet {
 	private static final long	serialVersionUID	= 1L;
 	public static final String	VUE					= "/WEB-INF/rendre.jsp";
 
+	/**
+	 * 
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Objet.listeEmprunt(request);
 
@@ -30,13 +33,16 @@ public class Rendre extends HttpServlet {
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 
+	/**
+	 * 
+	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String id_tmp = (request.getParameter("id_rendre"));
 		int id = (int) Integer.parseInt(id_tmp);
 		try {
+			request.setAttribute("success_message", "Emprunt rendu");
 			Objet.rendreOjet(id);
-			request.setAttribute("success_message", Objet.getIntituleFromId(id) + " rendu");
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("warning_message", "Erreur : " + e.getMessage());
