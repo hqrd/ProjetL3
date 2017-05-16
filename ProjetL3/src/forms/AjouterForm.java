@@ -8,11 +8,11 @@ import beans.Objet;
 
 public final class AjouterForm {
 
-	private static final String	CHAMP_INITULE	= "intitule";
-	private static final String	CHAMP_QTITE		= "quantite";
+	private static final String			CHAMP_INITULE	= "intitule";
+	private static final String			CHAMP_QTITE		= "quantite";
 
 	private String						resultat;
-	private static Map<String, String>	erreurs	= new HashMap<String, String>();
+	private static Map<String, String>	erreurs			= new HashMap<String, String>();
 
 	public String getResultat() {
 		return resultat;
@@ -51,14 +51,14 @@ public final class AjouterForm {
 				setErreur(CHAMP_INITULE, e.getMessage());
 			}
 		}
-		if (erreurs.isEmpty())
-
-		{
+		if (erreurs.isEmpty()) {
+			request.setAttribute("success_message", qtite + " objet(s) " + intitule + " ajouté");
 			resultat = "Succès de l'insertion";
 		} else
 
 		{
 			resultat = "Echec de l'insertion";
+			request.setAttribute("warning_message", "Erreur : " + resultat);
 
 		}
 
