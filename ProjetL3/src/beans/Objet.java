@@ -254,7 +254,7 @@ public class Objet {
 
 			resultat = statement.executeQuery();
 
-			message += "<h2>Historique</h2><table class='table table-hover'>	"
+			message += "<h2>Historique</h2><table id='histo' class='table table-hover'>	"
 					+ "<thead><tr><th>Nom</th><th>Quantit&eacute;</th><th>Emprunté le</th><th>Rendu le</th></tr></thead><tbody>";
 			while (resultat.next()) {
 				String id = resultat.getString("nom");
@@ -434,7 +434,6 @@ public class Objet {
 		}
 
 	}
-
 
 	/**
 	 * @param id
