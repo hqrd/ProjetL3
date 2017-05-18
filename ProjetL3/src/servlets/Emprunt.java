@@ -47,7 +47,7 @@ public class Emprunt extends HttpServlet {
 		try {
 			qtite = Integer.parseInt(qtite_tmp);
 			HttpSession session = request.getSession();
-			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+			entities.Utilisateur user = (entities.Utilisateur) session.getAttribute(ATT_SESSION_USER);
 			Objet.emprunterObjet(user, id, qtite);
 			request.setAttribute("success_message", "Emprunt réussi : " + qtite + " " + Objet.getIntituleFromId(id));
 		} catch (Exception e) {

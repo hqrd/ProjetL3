@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import util.SqlUtil;
 
+/**
+ * @deprecated Utilisation de JPA
+ */
+@Deprecated
 public class Utilisateur {
 	private Integer	id;
 	private String	nom;

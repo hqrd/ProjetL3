@@ -9,16 +9,21 @@ import java.text.ParseException;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import dao.UtilisateurDAO;
 import util.SqlUtil;
 import util.Utils;
 
+/**
+ * @deprecated Utilisation de JPA
+ */
+@Deprecated
 public class Objet {
 
-	private Integer	id;
-	private String	intitule;
-	private Integer	qtiterest;
+	private Integer				id;
+	private String				intitule;
+	private Integer				qtiterest;
 
-	public static final String ATT_SESSION_USER = "sessionUtilisateur";
+	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
 	/**
 	 * @param intitule
@@ -66,13 +71,11 @@ public class Objet {
 	/**
 	 * @param request
 	 */
-	public static void listeObjet(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
-
+	public static String listeObjet(entities.Utilisateur user) {
 		Connection connexion = null;
 		ResultSet resultat = null;
 		PreparedStatement statement = null;
+		String message = null;
 		try {
 			connexion = SqlUtil.getConnection();
 
@@ -80,7 +83,7 @@ public class Objet {
 
 			resultat = statement.executeQuery();
 
-			String message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantité</th><th>Actions	 </th></tr></thead><tbody>";
+			message = "<table class='table table-hover'>	<thead><tr><th>Nom</th><th>Quantité</th><th>Actions	 </th></tr></thead><tbody>";
 			while (resultat.next()) {
 				String nom = resultat.getString("intitule");
 				Integer qtite = resultat.getInt("qtiterest");
@@ -92,7 +95,8 @@ public class Objet {
 
 				if (user != null) {
 					try {
-						if (user.getObjets(nom) > 0)
+						UtilisateurDAO utilisateurDao = new UtilisateurDAO();
+						if (utilisateurDao.getObjets(user, nom) > 0)
 							message += "<a href='Rendre'><button type='button' class='btn btn-default btn-sm'>Rendre</button></a>";
 						if (user.isAdmin()) {
 							message += "</div><div class='col-sm-6'><form id='supprimer' role='form' method='post' action='admin/Supprimer'>"
@@ -108,7 +112,7 @@ public class Objet {
 			message += "</tbody>";
 			message += "</table>";
 
-			request.setAttribute("tab", message);
+			return message;
 
 		} catch (SQLException e) {
 			/* Gérer les éventuelles erreurs ici */
@@ -117,6 +121,7 @@ public class Objet {
 			SqlUtil.close(statement);
 			SqlUtil.close(connexion);
 		}
+		return message;
 	}
 
 	/**
@@ -161,7 +166,7 @@ public class Objet {
 	 * @param qtite
 	 * @throws Exception
 	 */
-	public static void emprunterObjet(Utilisateur user, Integer id, Integer qtite) throws Exception {
+	public static void emprunterObjet(entities.Utilisateur user, Integer id, Integer qtite) throws Exception {
 		if (id == 0)
 			throw new Exception("Veuillez choisir un objet");
 		else if (qtite <= 0)

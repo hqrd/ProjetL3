@@ -43,7 +43,7 @@ public class RestrictionAdminFilter implements Filter {
 			/* Redirection vers la page publique */
 			request.getRequestDispatcher(ACCES_CONNEXION).forward(request, response);
 		} else {
-			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+			entities.Utilisateur user = (entities.Utilisateur) session.getAttribute(ATT_SESSION_USER);
 			if (user.isAdmin()) {
 				chain.doFilter(request, response);
 			} else {

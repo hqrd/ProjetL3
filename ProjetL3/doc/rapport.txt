@@ -18,6 +18,12 @@ fonctionnalités:
 -voir historique objet / général
 -droits pour ajouter/supprimer objets
 
+Gestion pool BDD > BoneCP
+
+JPA : Hibernate, EclipseLink, consort, TopLink
+> EclipseLink = utilisation du standart JPA (Hibernate plus utilisé mais fonctionnalités dépendantes)
+EJB 3 (Enterprise JavaBean)
+
 
 BDD
 Matériel
