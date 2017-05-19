@@ -18,6 +18,9 @@ fonctionnalités:
 -voir historique objet / général
 -droits pour ajouter/supprimer objets
 
+-JPA
+-struts
+-Serveur Amazon
 
 BDD
 Matériel
