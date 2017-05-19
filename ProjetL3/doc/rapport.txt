@@ -22,6 +22,14 @@ fonctionnalités:
 -struts
 -Serveur Amazon
 
+Gestion pool BDD > BoneCP
+
+JPA : Hibernate, EclipseLink, consort, TopLink
+> EclipseLink = utilisation du standart JPA (Hibernate plus utilisé mais fonctionnalités dépendantes)
+
+Dans un second temps, redévelopper sur un projet Spring avec JPA et Hibernate (plus propre)
+
+
 BDD
 Matériel
 	ID

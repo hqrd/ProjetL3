@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import beans.Objet;
-import beans.Utilisateur;
 import forms.ConnexionForm;
+import util.Utils;
 
 @WebServlet("/accueil")
 public class Connexion extends HttpServlet {
@@ -20,7 +20,6 @@ public class Connexion extends HttpServlet {
 	private static final long	serialVersionUID	= 1L;
 	public static final String	ATT_USER			= "utilisateur";
 	public static final String	ATT_FORM			= "form";
-	public static final String	ATT_SESSION_USER	= "sessionUtilisateur";
 
 	public static final String	VUE					= "/WEB-INF/accueil" + ".jsp";
 
@@ -36,7 +35,10 @@ public class Connexion extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Objet.listeObjet(request);
+
+		entities.Utilisateur user = Utils.getSessionUser(request);
+
+		request.setAttribute("tab", Objet.listeObjet(user));
 
 		setActiveMenu(request);
 
@@ -46,30 +48,24 @@ public class Connexion extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Préparation de l'objet formulaire */
 		ConnexionForm form = new ConnexionForm();
-		Objet.listeObjet(request);
-
-		setActiveMenu(request);
 
 		/* Appel au traitement et à la validation de la requête, et récupération du bean en résultant */
-		Utilisateur utilisateur1 = null;
+		entities.Utilisateur utilisateur1 = null;
 		try {
 			utilisateur1 = form.connecterUtilisateur(request);
-			HttpSession session = request.getSession();
 
 			/* Stockage du formulaire et du bean dans l'objet request */
 			request.setAttribute(ATT_FORM, form);
 			request.setAttribute(ATT_USER, utilisateur1);
 
 			if (form.getErreurs().isEmpty()) {
-				session.setAttribute(ATT_SESSION_USER, utilisateur1);
+				Utils.setSessionUser(request, utilisateur1);
 			} else {
-				session.setAttribute(ATT_SESSION_USER, null);
+				Utils.setSessionUser(request, null);
 			}
 
-			/* Stockage du formulaire et du bean dans l'objet request */
-
 		} catch (Exception e) {
-			System.out.println("erreur : " + e.getMessage());
+			e.printStackTrace();
 			this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 
 		}

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import beans.Objet;
+import util.Utils;
 
 @WebServlet("/logout")
 public class Deconnexion extends HttpServlet {
@@ -20,7 +21,11 @@ public class Deconnexion extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().invalidate();
-		Objet.listeObjet(request);
+
+		entities.Utilisateur user = Utils.getSessionUser(request);
+		
+		request.setAttribute("tab", Objet.listeObjet(user));
+		
 		request.setAttribute("te1", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class1", "active");
 		request.setAttribute("te2", "");
