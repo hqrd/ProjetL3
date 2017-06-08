@@ -1,24 +1,29 @@
 package entities;
 
+import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "UTILISATEUR")
-public class Utilisateur {
+public class Utilisateur implements Serializable {
+	private static final long	serialVersionUID	= 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
-	private Integer	id;
+	private Integer				id;
 	@Column(name = "NOM")
-	private String	nom;
+	private String				nom;
 	@Column(name = "PRENOM")
-	private String	prenom;
+	private String				prenom;
 	@Column(name = "EMAIL")
-	private String	email;
+	private String				email;
 	@Column(name = "PSWDENC")
-	private String	motDePasse;
+	private String				motDePasse;
 	@Column(name = "ROLE")
-	private String	role;
+	private String				role;
+	@OneToMany(mappedBy = "user")
+	private List<Emprunt>		emprunts;
 
 	public Utilisateur(String nom, String prenom, String email, String motDePasse, String role) {
 		this.nom = nom;
@@ -85,6 +90,14 @@ public class Utilisateur {
 
 	public boolean isAdmin() {
 		return (this.getRole().equals("admin"));
+	}
+
+	public List<Emprunt> getEmprunts() {
+		return emprunts;
+	}
+
+	public void setEmprunts(List<Emprunt> emprunts) {
+		this.emprunts = emprunts;
 	}
 
 }

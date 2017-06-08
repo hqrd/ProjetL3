@@ -7,8 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import beans.Objet;
+import dao.ObjetDAO;
 import forms.ConnexionForm;
 import util.Utils;
 
@@ -35,11 +34,10 @@ public class Connexion extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		entities.Utilisateur user = Utils.getSessionUser(request);
+		ObjetDAO objetDAO = new ObjetDAO();
 
-		request.setAttribute("tab", Objet.listeObjet(user));
-
+		request.setAttribute("tab", objetDAO.listeObjet(user));
 		setActiveMenu(request);
 
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);

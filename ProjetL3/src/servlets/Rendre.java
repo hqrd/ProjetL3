@@ -7,7 +7,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import beans.Objet;
+import dao.ObjetDAO;
+import util.Utils;
 
 @WebServlet("/Rendre")
 public class Rendre extends HttpServlet {
@@ -22,7 +23,14 @@ public class Rendre extends HttpServlet {
 	 * 
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Objet.listeEmprunt(request);
+		
+
+		entities.Utilisateur user = Utils.getSessionUser(request);
+		ObjetDAO objetDAO = new ObjetDAO();
+
+		request.setAttribute("tab", objetDAO.listeEmprunt(user));
+
+//		Objet.listeEmprunt(request);
 
 		request.setAttribute("te3", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class3", "active");
@@ -40,17 +48,20 @@ public class Rendre extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		ObjetDAO objetDAO = new ObjetDAO();
+		entities.Utilisateur user = Utils.getSessionUser(request);
+		
 		String id_tmp = (request.getParameter("id_rendre"));
 		int id = (int) Integer.parseInt(id_tmp);
 		try {
 			request.setAttribute("success_message", "Emprunt rendu");
-			Objet.rendreOjet(id);
+			objetDAO.rendreOjet(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("warning_message", "Erreur : " + e.getMessage());
 		}
 
-		Objet.listeEmprunt(request);
+		request.setAttribute("tab", objetDAO.listeEmprunt(user));
 		this.getServletContext().getRequestDispatcher(VUE).forward(request, response);
 	}
 

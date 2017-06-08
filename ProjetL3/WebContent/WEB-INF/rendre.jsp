@@ -11,8 +11,7 @@
 <body>
 
 	<div class="container">
-		<span class="erreur">${form.erreurs['nom']}</span> <span
-			class="erreur">${form.erreurs['motdepasse']}</span>
+		<span class="erreur">${form.erreurs['nom']}</span> <span class="erreur">${form.erreurs['motdepasse']}</span>
 		<p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
 
 		<h2>Liste des objets</h2>
@@ -23,8 +22,10 @@
 
 </body>
 <script>
-$(document).ready(function() {
-    $('#histo').DataTable();
-} );
+    $(document).ready(function() {
+	$('#histo').DataTable({
+	    "aaSorting" : []
+	});
+    });
 </script>
 </html>

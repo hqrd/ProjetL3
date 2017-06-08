@@ -2,14 +2,9 @@ package forms;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import beans.Utilisateur;
-import util.SqlUtil;
+import dao.UtilisateurDAO;
+import entities.Utilisateur;
 
 public final class InscriptionForm {
 	private static final String	CHAMP_EMAIL		= "email";
@@ -19,7 +14,7 @@ public final class InscriptionForm {
 	private static final String	CHAMP_PRENOM	= "prenom";
 
 	private String				resultat;
-	private Map<String, String>	erreurs	= new HashMap<String, String>();
+	private Map<String, String>	erreurs			= new HashMap<String, String>();
 
 	public String getResultat() {
 		return resultat;
@@ -37,6 +32,7 @@ public final class InscriptionForm {
 		String prenom = getValeurChamp(request, CHAMP_PRENOM);
 
 		Utilisateur utilisateur = new Utilisateur();
+		UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
 
 		try {
 			validationEmail(email);
@@ -58,7 +54,7 @@ public final class InscriptionForm {
 
 		if (erreurs.isEmpty()) {
 			try {
-				insertBDD(utilisateur);
+				utilisateurDAO.insertBDD(utilisateur);
 			} catch (Exception e) {
 				setErreur(CHAMP_NOM, e.getMessage());
 			}
@@ -80,7 +76,9 @@ public final class InscriptionForm {
 				throw new Exception("Merci de saisir une adresse mail valide.");
 			}
 
-			if (Utilisateur.findByEmail(email) != null) {
+			UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+
+			if (utilisateurDAO.findByEmail(email) != null) {
 				throw new Exception("Email déjà utilisé");
 			}
 		} else {
@@ -100,14 +98,14 @@ public final class InscriptionForm {
 		}
 	}
 
-	/*
+	/**
 	 * Ajoute un message correspondant au champ spécifié à la map des erreurs.
 	 */
 	private void setErreur(String champ, String message) {
 		erreurs.put(champ, message);
 	}
 
-	/*
+	/**
 	 * Méthode utilitaire qui retourne null si un champ est vide, et son contenu
 	 * sinon.
 	 */
@@ -120,53 +118,4 @@ public final class InscriptionForm {
 		}
 	}
 
-	/**
-	 * Insert un Utilisateur en BDD
-	 * 
-	 * @param utilisateur
-	 * @throws Exception
-	 */
-	private static void insertBDD(Utilisateur utilisateur) throws Exception {
-		Connection connexion = null;
-		PreparedStatement statement = null;
-		try {
-			connexion = SqlUtil.getConnection();
-
-			statement = connexion
-					.prepareStatement("insert into utilisateur (email, nom, prenom, pswdEnc) values ( ? , ? , ? , ? )");
-			statement.setString(1, utilisateur.getEmail());
-			statement.setString(2, utilisateur.getNom());
-			statement.setString(3, utilisateur.getPrenom());
-			statement.setString(4, encode(utilisateur.getMotDePasse()));
-			statement.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new Exception("erreur : " + e.getMessage());
-		} finally {
-			SqlUtil.close(statement);
-			SqlUtil.close(connexion);
-		}
-	}
-
-	private static String encode(String password) {
-		byte[] uniqueKey = password.getBytes();
-		byte[] hash = null;
-
-		try {
-			hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
-		} catch (NoSuchAlgorithmException e) {
-			throw new Error("No MD5 support in this VM.");
-		}
-
-		StringBuilder hashString = new StringBuilder();
-		for (int i = 0 ; i < hash.length ; i++) {
-			String hex = Integer.toHexString(hash[i]);
-			if (hex.length() == 1) {
-				hashString.append('0');
-				hashString.append(hex.charAt(hex.length() - 1));
-			} else
-				hashString.append(hex.substring(hex.length() - 2));
-		}
-		return hashString.toString();
-	}
 }

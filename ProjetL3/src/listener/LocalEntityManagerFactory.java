@@ -13,7 +13,7 @@ public class LocalEntityManagerFactory implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		emf = Persistence.createEntityManagerFactory("UtilisateurPU");
+		emf = Persistence.createEntityManagerFactory("primary");
 	}
 
 	@Override

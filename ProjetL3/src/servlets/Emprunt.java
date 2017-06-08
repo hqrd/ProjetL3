@@ -2,14 +2,16 @@
 package servlets;
 
 import java.io.IOException;
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import beans.Objet;
-import beans.Utilisateur;
+import dao.ObjetDAO;
+import entities.Objet;
+import listener.LocalEntityManagerFactory;
 
 @WebServlet("/Reservation")
 public class Emprunt extends HttpServlet {
@@ -23,7 +25,9 @@ public class Emprunt extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Objet.selectObj(request);
+		ObjetDAO objetDAO = new ObjetDAO();
+
+		request.setAttribute("tab", objetDAO.selectObj(request));
 		request.setAttribute("te2", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class2", "active");
 		request.setAttribute("te3", "");
@@ -44,12 +48,16 @@ public class Emprunt extends HttpServlet {
 		Integer id = Integer.parseInt(tmp[0]);
 		String qtite_tmp = request.getParameter("nb");
 		Integer qtite = -1;
+
+		EntityManager em = LocalEntityManagerFactory.createEntityManager();
+		ObjetDAO objetDAO = new ObjetDAO();
+
 		try {
 			qtite = Integer.parseInt(qtite_tmp);
 			HttpSession session = request.getSession();
 			entities.Utilisateur user = (entities.Utilisateur) session.getAttribute(ATT_SESSION_USER);
-			Objet.emprunterObjet(user, id, qtite);
-			request.setAttribute("success_message", "Emprunt réussi : " + qtite + " " + Objet.getIntituleFromId(id));
+			objetDAO.emprunterObjet(user, id, qtite);
+			request.setAttribute("success_message", "Emprunt réussi : " + qtite + " " + em.find(Objet.class, id).getIntitule());
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("warning_message", "Erreur : " + e.getMessage());

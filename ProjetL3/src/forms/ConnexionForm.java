@@ -8,13 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import beans.Utilisateur;
+import entities.Utilisateur;
 import listener.LocalEntityManagerFactory;
-import util.SqlUtil;
 
 public final class ConnexionForm {
 
@@ -36,7 +31,7 @@ public final class ConnexionForm {
 		erreurs.clear();
 	}
 
-	public entities.Utilisateur connecterUtilisateur(HttpServletRequest request) {
+	public Utilisateur connecterUtilisateur(HttpServletRequest request) {
 		resetErrors();
 
 		String motDePasse = getValeurChamp(request, CHAMP_PASS);
@@ -47,7 +42,7 @@ public final class ConnexionForm {
 		} catch (Exception e) {
 			setErreur(CHAMP_EMAIL, e.getMessage());
 		}
-		entities.Utilisateur utilisateur = null;
+		Utilisateur utilisateur = null;
 		try {
 			utilisateur = Connexion(email, motDePasse);
 		} catch (Exception e) {
@@ -82,7 +77,7 @@ public final class ConnexionForm {
 		}
 	}
 
-	private static entities.Utilisateur Connexion(String email, String motDePasse) throws Exception {
+	private static Utilisateur Connexion(String email, String motDePasse) throws Exception {
 
 		EntityManager em = LocalEntityManagerFactory.createEntityManager();
 
@@ -92,10 +87,10 @@ public final class ConnexionForm {
 				.createQuery("SELECT u FROM Utilisateur u WHERE u.email=:email AND u.motDePasse=:motDePasse ");
 		requete.setParameter("email", email);
 		requete.setParameter("motDePasse", pswdEnc);
-		entities.Utilisateur utilisateur = null;
+		Utilisateur utilisateur = null;
 		boolean found = true;
 		try {
-			utilisateur = (entities.Utilisateur) requete.getSingleResult();
+			utilisateur = (Utilisateur) requete.getSingleResult();
 		} catch (NoResultException e) {
 			found = false;
 		}
@@ -104,11 +99,11 @@ public final class ConnexionForm {
 			return utilisateur;
 
 		// si pas de résultat on vérifie si l'email existe
-		requete = em.createQuery("SELECT * FROM Utilisateur u WHERE u.email=:email");
+		requete = em.createQuery("SELECT u FROM Utilisateur u WHERE u.email=:email");
 		requete.setParameter("email", email);
 		boolean foundEmail = true;
 		try {
-			utilisateur = (entities.Utilisateur) requete.getSingleResult();
+			utilisateur = (Utilisateur) requete.getSingleResult();
 		} catch (NoResultException e) {
 			foundEmail = false;
 		}

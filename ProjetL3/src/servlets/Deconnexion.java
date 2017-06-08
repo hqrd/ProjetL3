@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import beans.Objet;
+import dao.ObjetDAO;
 import util.Utils;
 
 @WebServlet("/logout")
@@ -23,8 +23,9 @@ public class Deconnexion extends HttpServlet {
 		request.getSession().invalidate();
 
 		entities.Utilisateur user = Utils.getSessionUser(request);
-		
-		request.setAttribute("tab", Objet.listeObjet(user));
+		ObjetDAO objetDAO = new ObjetDAO();
+
+		request.setAttribute("tab", objetDAO.listeObjet(user));
 		
 		request.setAttribute("te1", "<span class='sr-only'>(current)</span>");
 		request.setAttribute("class1", "active");

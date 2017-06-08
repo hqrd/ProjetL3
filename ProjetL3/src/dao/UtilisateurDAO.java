@@ -3,6 +3,7 @@ package dao;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import entities.Objet;
 import entities.Utilisateur;
 import listener.LocalEntityManagerFactory;
 
@@ -27,7 +28,7 @@ public class UtilisateurDAO {
 		} catch (NoResultException e) {
 			return null;
 		}
-		System.out.println(utilisateur.getEmail());
+
 		return utilisateur;
 	}
 
@@ -39,23 +40,48 @@ public class UtilisateurDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public int getObjets(Utilisateur user, String intitule) throws Exception {
+	public Integer getObjets(Utilisateur user, String intitule) throws Exception {
 		EntityManager em = LocalEntityManagerFactory.createEntityManager();
 
-		int nbObjets = 0;
+		Long nbObjets = null;
 
-		Query requete = em.createQuery("SELECT id FROM Objet o WHERE o.intitule = :intitule");
+		Query requete = em.createQuery("SELECT o FROM Objet o WHERE o.intitule = :intitule");
 		requete.setParameter("intitule", intitule);
-		int idObjet = (int) requete.getSingleResult();
+		Objet objet = (Objet) requete.getSingleResult();
 
 		requete = em.createQuery(
-				"SELECT SUM(qtite_emprunt) as nb_res FROM emprunt e WHERE e.ID_USER = :idUser AND e.ID_OBJET = :idObjet AND e.rendu = false");
+				"SELECT SUM(e.qtiteEmprunt) as nb_res FROM Emprunt e WHERE e.user = :user AND e.objet = :objet AND e.rendu = false");
 
-		requete.setParameter("idUser", user.getId());
-		requete.setParameter("idObjet", idObjet);
+		requete.setParameter("user", user);
+		requete.setParameter("objet", objet);
+		try {
+			nbObjets = (Long) requete.getSingleResult();
+		} catch (NoResultException e) {
+			return 0;
+		}
 
-		nbObjets = (int) requete.getSingleResult();
+		if (nbObjets != null)
+			return nbObjets.intValue();
+		return 0;
+	}
 
-		return nbObjets;
+	/**
+	 * Insert un Utilisateur en BDD
+	 * 
+	 * @param utilisateur
+	 * @throws Exception
+	 */
+	public void insertBDD(Utilisateur utilisateur) throws Exception {
+		EntityManager em = LocalEntityManagerFactory.createEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			em.persist(utilisateur);
+			em.getTransaction().commit();
+			em.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Erreur lors de l'inscription");
+		}
 	}
 }

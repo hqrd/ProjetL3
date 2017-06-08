@@ -2,9 +2,10 @@ package forms;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import beans.Objet;
+import entities.Objet;
+import listener.LocalEntityManagerFactory;
 
 public final class AjouterForm {
 
@@ -29,6 +30,8 @@ public final class AjouterForm {
 	public void validation(HttpServletRequest request) {
 		resetErrors();
 
+		EntityManager em = LocalEntityManagerFactory.createEntityManager();
+
 		String intitule = request.getParameter(CHAMP_INITULE);
 		String qtite_tmp = request.getParameter(CHAMP_QTITE);
 		int qtite = 0;
@@ -44,19 +47,17 @@ public final class AjouterForm {
 		if (qtite < 0)
 			setErreur(CHAMP_QTITE, "\nVeuilliez saisir une quantité valide (supérieur ou égale à 0)");
 		if (erreurs.isEmpty()) {
-			try {
-
-				Objet.ajouterBDD(intitule, qtite);
-			} catch (SQLException e) {
-				setErreur(CHAMP_INITULE, e.getMessage());
-			}
+			Objet objet = new Objet();
+			objet.setIntitule(intitule);
+			objet.setQtiterest(qtite);
+			em.getTransaction().begin();
+			em.persist(objet);
+			em.getTransaction().commit();
 		}
 		if (erreurs.isEmpty()) {
 			request.setAttribute("success_message", qtite + " objet(s) " + intitule + " ajouté");
 			resultat = "Succès de l'insertion";
-		} else
-
-		{
+		} else {
 			resultat = "Echec de l'insertion";
 
 			request.setAttribute("warning_message", "Erreur : " + resultat);
