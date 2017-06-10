@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import beans.Utilisateur;
+import entities.Utilisateur;
 
 @WebFilter(urlPatterns = "/admin/*")
 public class RestrictionAdminFilter implements Filter {
@@ -43,7 +43,7 @@ public class RestrictionAdminFilter implements Filter {
 			/* Redirection vers la page publique */
 			request.getRequestDispatcher(ACCES_CONNEXION).forward(request, response);
 		} else {
-			entities.Utilisateur user = (entities.Utilisateur) session.getAttribute(ATT_SESSION_USER);
+			Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 			if (user.isAdmin()) {
 				chain.doFilter(request, response);
 			} else {
